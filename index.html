@@ -521,7 +521,7 @@
     <script>
         /* ===================== SHEETS BACKEND CONFIG ===================== */
         /* Replace with your deployed Apps Script Web App URL */
-        const SHEETS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxDv-aWJZ7arMC72hlRKNJ-0-zSULqnn0xzICuwjJLGbvn4tCG2sXz4GBixCBNNAsDtxg/exec';
+        const SHEETS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyKxOaL9MU7uwXhA7eibiA58ndWck7xPqubQoReDQLhOu1dbAsoFYzl9nVQGM9vSDau/exec';
 
         async function sheetsApi(action, payload) {
             const form = new URLSearchParams({ action, ...Object.fromEntries(Object.entries(payload).map(([k, v]) => [k, String(v)])) });
