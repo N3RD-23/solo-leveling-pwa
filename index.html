@@ -4,256 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-    <title>Solo Leveling — Daily Grind</title>
+    <title>Solo Leveling</title>
     <meta name="theme-color" content="#0b1020" />
     <link rel="icon" type="image/x-icon" href="icon.ico" />
     <link rel="manifest" href="manifest.json" />
-    <style>
-        :root {
-            --bg: #0b1020;
-            --panel: #111831;
-            --muted: #7a8ab8;
-            --ink: #e8efff;
-            --accent: #39aaff;
-            --accent2: #7c4dff;
-            --danger: #ff5b6e;
-            --success: #35d07f;
-            --gold: #ffcc33;
-            --card: #0e1530;
-            --chip: #1a2446
-        }
-
-        * {
-            box-sizing: border-box
-        }
-
-        html,
-        body {
-            height: 100%
-        }
-
-        body {
-            margin: 0;
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: radial-gradient(1200px 600px at 70% -10%, #14305a 0, transparent 60%), var(--bg);
-            color: var(--ink);
-            -webkit-tap-highlight-color: transparent
-        }
-
-        .app {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 16px 14px 110px
-        }
-
-        header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: sticky;
-            top: 0;
-            background: linear-gradient(180deg, var(--bg), #0b1020ee 75%, transparent);
-            padding: 10px 2px 12px;
-            backdrop-filter: saturate(130%) blur(6px);
-            z-index: 5
-        }
-
-        .logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            background: #0e1530 url("icon.ico") center/cover no-repeat;
-            box-shadow: 0 0 20px #39aaff88, inset 0 0 10px #39aaff55
-        }
-
-        h1 {
-            font-size: 20px;
-            margin: 0;
-            letter-spacing: .3px
-        }
-
-        .sub {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        .row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap
-        }
-
-        .grow {
-            flex: 1
-        }
-
-        button {
-            background: linear-gradient(180deg, var(--accent), #0f6dbd);
-            border: 0;
-            color: #fff;
-            padding: 12px 14px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 6px 16px #39aaff33, inset 0 -2px 0 #0a4f8c;
-            transition: filter .15s, transform .03s
-        }
-
-        button:active {
-            transform: translateY(1px)
-        }
-
-        .ghost {
-            background: #1a2446;
-            color: #d7e6ff;
-            box-shadow: none
-        }
-
-        .gold {
-            background: linear-gradient(180deg, #ffd267, #c49c1f);
-            color: #231b00
-        }
-
-        .danger {
-            background: linear-gradient(180deg, #ff7b87, #c83b4a)
-        }
-
-        .panel {
-            background: linear-gradient(180deg, #0f1834, #0c1229);
-            border: 1px solid #243059;
-            border-radius: 14px;
-            padding: 14px;
-            box-shadow: 0 10px 30px #08102866
-        }
-
-        .grid {
-            display: grid;
-            gap: 12px
-        }
-
-        .grid.cols-2 {
-            grid-template-columns: 1fr 1fr
-        }
-
-        @media(max-width:720px) {
-            .grid.cols-2 {
-                grid-template-columns: 1fr
-            }
-        }
-
-        .stat {
-            background: var(--card);
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid #202a52;
-            display: flex;
-            align-items: center;
-            gap: 10px
-        }
-
-        .chip {
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: var(--chip);
-            border: 1px solid #253261;
-            font-size: 12px
-        }
-
-        .list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px
-        }
-
-        .task {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            background: var(--card);
-            border: 1px solid #202a52;
-            border-radius: 12px;
-            padding: 10px
-        }
-
-        .task input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            accent-color: var(--accent)
-        }
-
-        .task .title {
-            font-weight: 600
-        }
-
-        .task .meta {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        .kpi {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap
-        }
-
-        progress {
-            width: 100%;
-            height: 12px;
-            border: 0;
-            background: #101833;
-            border-radius: 10px;
-            overflow: hidden
-        }
-
-        progress::-webkit-progress-bar {
-            background: #101833
-        }
-
-        progress::-webkit-progress-value {
-            background: linear-gradient(90deg, var(--accent), var(--accent2))
-        }
-
-        .foot {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 10px;
-            background: linear-gradient(180deg, transparent, #0b1020 35%)
-        }
-
-        .foot .bar {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #0f1834;
-            border: 1px solid #243059;
-            border-radius: 14px;
-            padding: 10px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            justify-content: space-between
-        }
-
-        .small {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        .ok {
-            color: var(--success)
-        }
-
-        .bad {
-            color: #ff9aa7
-        }
-
-        .hl {
-            color: var(--gold);
-            font-weight: 700
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -261,14 +16,15 @@
         <header>
             <div class="logo" aria-hidden="true"></div>
             <div>
-                <h1>Solo Leveling — Daily Grind</h1>
-                <div class="sub">Non-Negotiables only • Auto-progress weekly</div>
+                <h1>Solo Leveling</h1>
+                <div class="sub">Non-Negotiables only • Weekly plan • Calorie tracking</div>
             </div>
             <div class="grow"></div>
             <button id="btnInstall" class="ghost" style="display:none">Install</button>
         </header>
 
-        <section class="grid cols-2" style="margin-top:12px">
+        <section class="grid cols-3" style="margin-top:12px">
+            <!-- Column 1: Today + NN -->
             <div class="panel">
                 <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
                     <h2 style="margin:0">Today</h2>
@@ -282,16 +38,16 @@
                     <span class="chip">Streak <b id="streak">0</b>🔥</span>
                     <span class="chip">HP <b id="hp">100</b>/100</span>
                 </div>
-                <progress id="xpBar" max="100" value="0"></progress>
                 <div class="panel"
-                    style="margin-top:6px;background:linear-gradient(180deg,#0f2a20,#091715);border-color:#1f4a3a">
+                    style="margin-top:12px;background:linear-gradient(180deg,#0f2a20,#091715);border-color:#1f4a3a">
                     <b>Unlocked Titles</b>
-                    <div id="titles" class="small">Apprentice</div>
+                    <div id="titles" class="small">E-Rank</div>
                 </div>
+                <progress id="xpBar" max="100" value="0"></progress>
 
                 <div class="panel" style="margin-top:12px;border:1px dashed #31508a">
                     <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
-                        <h3 style="margin:5">Non-Negotiables (complete all 4)</h3>
+                        <h3 style="margin:0">Non-Negotiables (complete all 4)</h3>
                         <span class="chip">Auto-progress weekly</span>
                     </div>
                     <div class="list" id="taskList"></div>
@@ -303,10 +59,35 @@
                 <div class="small" style="margin-top:8px">You can claim only after all 4 are checked.</div>
             </div>
 
+            <!-- Column 2: Weekly Workout Plan + Status -->
             <div class="panel">
                 <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
-                    <h2 style="margin:0">Status</h2>
+                    <h2 style="margin:0">Weekly Workout Plan</h2>
                 </div>
+                <div class="grid">
+                    <div class="stat">
+                        <div class="grow">
+                            <div><b>Scheme</b></div>
+                            <div class="small">How to progress?</div>
+                        </div>
+                        <select title="poScheme" id="poScheme" style="width:180px">
+                            <option value="load">Load +2.5 kg (main lifts)</option>
+                            <option value="volume">Volume +1 rep (accessories)</option>
+                        </select>
+                    </div>
+                    <div class="stat">
+                        <div class="grow">
+                            <div><b>Main Lift Increment</b></div>
+                            <div class="small">kg</div>
+                        </div>
+                        <input aria-label="" type="number" id="poIncKg" value="2.5" step="0.5" min="0.5"
+                            style="width:110px" placeholder="2.5" title="Increment">
+                    </div>
+                </div>
+                <div class="row" style="margin-top:8px">
+                    <button id="btnGenWeek" class="ghost">Generate Next 7 Days</button>
+                </div>
+                <div id="planList" class="list" style="margin-top:10px"></div>
 
                 <div class="panel"
                     style="margin-top:12px;background:linear-gradient(180deg,#2a0f20,#170912);border-color:#4a1f31">
@@ -314,14 +95,47 @@
                     <div id="punishQueue" class="small empty">Empty (stay sharp!)</div>
                 </div>
             </div>
-        </section>
 
-        <section class="panel" style="margin-top:12px">
-            <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
-                <h2 style="margin:0">History</h2>
-                <span class="chip">Completed Days: <b id="daysCleared">0</b></span>
+            <!-- Column 3: Calorie Tracker + History -->
+            <div class="panel">
+                <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
+                    <h2 style="margin:0">Daily Calorie Tracker</h2>
+                </div>
+                <div class="stat">
+                    <div class="grow">
+                        <div><b>Add calories</b></div>
+                        <div class="small">Hard minimum: <span id="calMinChip" class="chip">3500 kcal</span></div>
+                    </div>
+                </div>
+                <div class="grid">
+                    <input id="calKcal" type="number" min="0" step="10" placeholder="kcal (e.g., 650)">
+                    <input id="calNote" type="text" placeholder="note (e.g., chicken & rice)">
+                </div>
+                <div class="row" style="margin-top:8px">
+                    <button id="btnAddCal" class="ghost">Add Entry</button>
+                    <button id="btnResetCal" class="danger">Reset Today</button>
+                    <div class="grow"></div>
+                    <span id="calStatus" class="chip">0 / 3500</span>
+                </div>
+                <div id="calList" class="list" style="margin-top:10px"></div>
+
+                <div class="panel" style="margin-top:12px">
+                    <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
+                        <h2 style="margin:0">History</h2>
+                        <span class="chip">Completed Days: <b id="daysCleared">0</b></span>
+                    </div>
+
+                    <!-- Last 3 completed (pinned) -->
+                    <div style="margin-top:10px;font-weight:600">Recent clears (last 3)</div>
+                    <div id="historyTop" class="list" style="margin-top:6px"></div>
+
+                    <!-- Scrollable remainder -->
+                    <div style="margin-top:12px;font-weight:600">All history</div>
+                    <div class="scrollwrap" style="margin-top:6px">
+                        <div id="historyRest" class="list"></div>
+                    </div>
+                </div>
             </div>
-            <div id="history" class="list" style="margin-top:10px"></div>
         </section>
     </div>
 
@@ -330,25 +144,12 @@
             <div class="small">PWA · Offline first · Data stays on this device</div>
             <div class="row">
                 <button id="btnNotify" class="ghost">Enable Notifications</button>
+                <button id="btnResetAll" class="danger">Reset Progress</button>
             </div>
         </div>
     </div>
 
     <script>
-        /* --------- Make button invisible after notifications have been allowed --------- */
-        function updateNotifyButtonVisibility() {
-            const btn = document.getElementById('btnNotify');
-            if (!btn) return;
-
-            // Hide if notifications aren’t supported
-            if (!('Notification' in window)) { btn.style.display = 'none'; return; }
-
-            // Hide if already granted (or if we previously marked it as enabled)
-            const granted = Notification.permission === 'granted';
-            const enabledFlag = localStorage.getItem('sl_notifications_enabled') === '1';
-            btn.style.display = (granted || enabledFlag) ? 'none' : '';
-        }
-
         /* --------- PWA SW registration --------- */
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -359,34 +160,51 @@
 
         /* ---------------- Core helpers/state ---------------- */
         const el = id => document.getElementById(id);
-        const todayStr = () => new Date().toLocaleDateString('en-CA');
-        const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } };
-        const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
         const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
         const escapeHtml = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } };
+        const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
 
+        /* ---- Date helpers (Safari-safe) ---- */
+        function yyyymmdd(d) {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+        function parseYmd(ymd) {
+            const [y, m, d] = (ymd || '').split('-').map(n => parseInt(n, 10));
+            if (!y || !m || !d) return new Date(NaN);
+            return new Date(y, m - 1, d); // local time
+        }
+        function addDays(d, dx) { const n = new Date(d); n.setDate(n.getDate() + dx); return n; }
+        const todayStr = () => yyyymmdd(new Date());
+
+        /* ---- State ---- */
         let settings = load('sl_settings', { goal: 9, xpPerTask: 10, xpPerClear: 40, hpLoss: 15 });
         let state = load('sl_state', { xp: 0, coins: 0, level: 1, hp: 100, streak: 0, daysCleared: 0, lastDate: todayStr() });
         let history = load('sl_history', []);
         let punishQ = load('sl_punish', []);
-        let titles = load('sl_titles', ['Apprentice']);
+        let titles = load('sl_titles', ['E-Rank']);
 
-        /* Leveling */
+        /* ---- Leveling ---- */
         const xpForLevel = n => 100 * n * n;
         const levelFromXP = xp => { let n = 1; while (xp >= xpForLevel(n)) n++; return n; };
         function grantXP(amount) {
-            state.xp += amount;
+            state.xp = Number(state.xp || 0) + Number(amount || 0);
             const newLevel = levelFromXP(state.xp);
             if (newLevel > state.level) {
-                state.level = newLevel; state.coins += 10 * (newLevel - 1);
-                const tiers = ['Apprentice', 'Hunter', 'Shadow Walker', 'Elite Raider', 'S-Rank', 'Monarch'];
-                const t = tiers[Math.min(tiers.length - 1, Math.floor(newLevel / 5))];
-                if (!titles.includes(t)) titles.push(t);
+                state.level = newLevel;
+                state.coins += 10 * (newLevel - 1);
+                const tiers = ['E-Rank', 'D-Rank', 'C-Rank', 'B-Rank', 'A-Rank', 'S-Rank', 'Monarch'];
+                const currentTitle = tiers[Math.min(tiers.length - 1, Math.floor(newLevel / 5))];
+                // store ONLY current title
+                titles = [currentTitle];
             }
             save('sl_state', state); save('sl_titles', titles);
         }
 
-        /* UI mini-helpers */
+        /* ---- UI helpers ---- */
         function toast(msg, type = 'info') {
             const t = document.createElement('div'); t.textContent = msg;
             t.style.position = 'fixed'; t.style.left = '50%'; t.style.bottom = '90px'; t.style.transform = 'translateX(-50%)';
@@ -405,21 +223,19 @@
             el('xpBar').max = xpForLevel(state.level);
             el('xpBar').value = state.xp;
             el('daysCleared').textContent = state.daysCleared;
-            el('titles').textContent = titles.join(' • ');
+            el('titles').textContent = titles[0] || 'Novice';
             el('todayChip').textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
-            el('punishQueue').innerHTML = punishQ.length ? ('<ul style="margin:6px 0 0 16px">' + punishQ.map(p => `<li>${p}</li>`).join('') + '</ul>') : '<div class="small">Stay Sharp!</div>';
+            el('punishQueue').innerHTML = punishQ.length ? ('<ul style="margin:6px 0 0 16px">' + punishQ.map(p => `<li>${p}</li>`).join('') + '</ul>') : '<div class="small">Empty (stay sharp!)</div>';
         }
-        function renderHistory() {
-            const wrap = el('history');
-            wrap.innerHTML = history.slice(0, 30).map(h => {
-                return `<div class="task">
-      <div class="grow">
-        <div class="title">${h.date} — ${h.cleared ? '<span class="hl">CLEARED ✅</span>' : '<span style="color:#ff9aa7">MISSED ❌</span>'}</div>
-        <div class="meta">XP +${h.earnedXP || 0}${h.punishmentsApplied?.length ? (' • Punishment: ' + h.punishmentsApplied.join(', ')) : ''}</div>
-      </div>
-      <span class="chip">Lv ${h.snapshot.level}</span>
-    </div>`;
-            }).join('') || '<div class="small">No history yet.</div>';
+
+        /* Hide notify button once enabled */
+        function updateNotifyButtonVisibility() {
+            const btn = document.getElementById('btnNotify');
+            if (!btn) return;
+            if (!('Notification' in window)) { btn.style.display = 'none'; return; }
+            const granted = Notification.permission === 'granted';
+            const enabledFlag = localStorage.getItem('sl_notifications_enabled') === '1';
+            btn.style.display = (granted || enabledFlag) ? 'none' : '';
         }
 
         /* ---------------- Non-Negotiables only (weekly progression) ---------------- */
@@ -464,6 +280,9 @@
             return ids.every(id => !!done[id]);
         }
 
+        /* XP/coins/HP effect per checkbox toggle */
+        const HP_PER_TOGGLE = 1;
+
         function renderTasks() {
             const wrap = el('taskList'); if (!wrap) return;
             const tasks = buildNonNegotiables();
@@ -477,7 +296,6 @@
       </div>
     </div>
   `).join('');
-            // Optional: set daily goal to total points
             const totalPts = tasks.reduce((a, b) => a + b.points, 0);
             if (settings.goal !== totalPts) { settings.goal = totalPts; save('sl_settings', settings); }
         }
@@ -489,11 +307,25 @@
                 const row = e.target.closest('.task'); if (!row) return;
                 const id = row.dataset.id;
                 setTodayDone(id, e.target.checked);
+
+                state.xp = Number(state.xp) || 0;
+                state.level = Number(state.level) || 1;
+                state.coins = Number(state.coins) || 0;
+                state.hp = Number(state.hp) || 0;
+                const per = Number(settings.xpPerTask) || 10;
+
                 if (e.target.checked) {
-                    state.coins += 1; save('sl_state', state);
-                    grantXP(settings.xpPerTask);
-                    refreshKPI();
+                    state.coins = Math.max(0, state.coins + 1);
+                    grantXP(per); // also saves state + titles
+                    state.hp = clamp(state.hp + HP_PER_TOGGLE, 0, 100);
+                } else {
+                    state.xp = Math.max(0, state.xp - per);
+                    state.level = levelFromXP(state.xp);
+                    state.coins = Math.max(0, state.coins - 1);
+                    state.hp = clamp(state.hp - HP_PER_TOGGLE, 0, 100);
+                    save('sl_state', state);
                 }
+                refreshKPI();
             });
         }
 
@@ -520,9 +352,7 @@
             history.unshift({ date: state.lastDate, cleared, earnedXP, punishmentsApplied: pItems, snapshot });
             save('sl_history', history);
 
-            // clear today's done map so tomorrow is fresh
             const all = getAllDoneMap(); delete all[todayStr()]; setAllDoneMap(all);
-
             state.lastDate = todayStr(); save('sl_state', state);
             refreshKPI(); renderHistory(); renderTasks();
         }
@@ -535,13 +365,225 @@
             }
         }
 
-        /* Notifications (browser permission; push infra optional) */
+        /* ---------------- Progressive Overload Plan (rebuilt & Safari-safe) ---------------- */
+        const poSettings = load('sl_po_settings', {
+            scheme: 'load', incKg: 2.5,
+            mainLifts: { squat: 40, bench: 30, deadlift: 60, ohp: 20, pullups: 6 }
+        });
+        let upcomingPlan = load('sl_po_plan', []); // [{date:'YYYY-MM-DD', items:[{title, notes}]}]
+
+        const roundTo = (n, step) => Math.round(n / step) * step;
+
+        /* Build items for a plan day by index 0..6 using current lifts */
+        function buildPlanDayItems(dayIndex, L) {
+            // Day template: A / rest / B / rest / light+bench / conditioning / active
+            if (dayIndex === 0) {
+                return [
+                    { title: `Squat 3×5 @ ${L.squat} kg`, notes: 'Main lift' },
+                    { title: `Bench 3×5 @ ${L.bench} kg`, notes: 'Main lift' },
+                    { title: `Pull-ups ${L.pullups}×3`, notes: 'Accessories' }
+                ];
+            } else if (dayIndex === 2) {
+                return [
+                    { title: `Deadlift 1×5 @ ${L.deadlift} kg`, notes: 'Main lift' },
+                    { title: `OHP 3×5 @ ${L.ohp} kg`, notes: 'Main lift' },
+                    { title: `DB Row 3×10`, notes: 'Accessories' }
+                ];
+            } else if (dayIndex === 4) {
+                return [
+                    { title: `Squat (light) 3×3 @ ${roundTo(L.squat * 0.9, 0.5)} kg`, notes: 'Main lift light' },
+                    { title: `Bench 3×5 @ ${L.bench} kg`, notes: 'Main lift' },
+                    { title: `Face Pull 3×15`, notes: 'Accessories' }
+                ];
+            } else if (dayIndex === 5) {
+                return [
+                    { title: `Lunges 3×12/leg`, notes: 'Accessories' },
+                    { title: `Plank 3×60s`, notes: 'Core' },
+                    { title: `Zone2 20–30 min`, notes: 'Conditioning' }
+                ];
+            } else {
+                return [{ title: `Active Recovery — walk 6 km or 8k+ steps`, notes: 'Mobility 10 min' }];
+            }
+        }
+
+        /* Generate next 7 days starting tomorrow (or from provided start) */
+        function generateNext7DaysPlan(startYmd = null) {
+            const incKg = Math.max(0.5, parseFloat(el('poIncKg').value || poSettings.incKg));
+            const scheme = el('poScheme').value || poSettings.scheme;
+
+            // Copy current lifts
+            const L = JSON.parse(JSON.stringify(poSettings.mainLifts));
+            if (scheme === 'load') {
+                L.squat = roundTo(L.squat + incKg, 0.5);
+                L.bench = roundTo(L.bench + incKg, 0.5);
+                L.deadlift = roundTo(L.deadlift + incKg, 0.5);
+                L.ohp = roundTo(L.ohp + Math.max(1, incKg / 2), 0.5);
+            } else {
+                L.pullups += 1;
+            }
+
+            const startDate = startYmd ? parseYmd(startYmd) : addDays(new Date(), 1);
+            const plan = [];
+            for (let i = 0; i < 7; i++) {
+                const date = yyyymmdd(addDays(startDate, i));
+                const items = buildPlanDayItems(i, L);
+                plan.push({ date, items });
+            }
+
+            // persist
+            upcomingPlan = plan;
+            poSettings.mainLifts = L;
+            poSettings.scheme = scheme;
+            poSettings.incKg = incKg;
+            save('sl_po_settings', poSettings);
+            save('sl_po_plan', upcomingPlan);
+            renderPlan();
+            toast('Next 7 days generated ✅', 'good');
+        }
+
+        /* Render plan using safe parser */
+        function renderPlan() {
+            const wrap = el('planList');
+            if (!wrap) return;
+            if (!upcomingPlan.length) { wrap.innerHTML = '<div class="small">No upcoming plan. Generate one!</div>'; return; }
+            wrap.innerHTML = upcomingPlan.map(day => {
+                const dt = parseYmd(day.date);
+                const nice = isNaN(dt) ? day.date : dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+                return `<div class="task">
+      <div class="grow">
+        <div class="title">${nice}</div>
+        <div class="meta">${day.items.map(i => escapeHtml(i.title)).join(' • ')}</div>
+      </div>
+      <span class="chip">${day.items.length} items</span>
+    </div>`;
+            }).join('');
+        }
+
+        /* ---------------- Daily Calorie Tracker (hard minimum) ---------------- */
+        const CAL_MIN = 3500; // hardcoded minimum
+        function loadCalDay() { const all = load('sl_cal', {}); return all[todayStr()] || { entries: [], total: 0 }; }
+        function saveCalDay(day) { const all = load('sl_cal', {}); all[todayStr()] = day; save('sl_cal', all); }
+
+        function renderCalories() {
+            el('calMinChip').textContent = `${CAL_MIN} kcal`;
+            const day = loadCalDay();
+            const list = el('calList');
+            list.innerHTML = day.entries.map(e => `
+    <div class="task" data-id="${e.id}">
+      <div class="grow">
+        <div class="title">${e.kcal} kcal</div>
+        <div class="meta">${escapeHtml(e.note || '')}</div>
+      </div>
+      <button class="ghost btnCalDel" type="button" aria-label="delete">🗑️</button>
+    </div>
+  `).join('') || '<div class="small">No entries yet.</div>';
+
+            const status = el('calStatus');
+            status.textContent = `${day.total} / ${CAL_MIN}`;
+            status.className = 'chip ' + (day.total >= CAL_MIN ? 'ok' : 'bad');
+        }
+        function addCalorieEntry(kcal, note) {
+            const day = loadCalDay();
+            const id = 'cal-' + Math.random().toString(36).slice(2);
+            day.entries.push({ id, kcal, note });
+            day.total = day.entries.reduce((a, b) => a + Number(b.kcal || 0), 0);
+            saveCalDay(day); renderCalories();
+        }
+        function deleteCalorieEntry(id) {
+            const day = loadCalDay();
+            day.entries = day.entries.filter(e => e.id !== id);
+            day.total = day.entries.reduce((a, b) => a + Number(b.kcal || 0), 0);
+            saveCalDay(day); renderCalories();
+        }
+        function resetCaloriesToday() { saveCalDay({ entries: [], total: 0 }); renderCalories(); }
+
+        /* ---------------- History render ---------------- */
+        function renderHistory() {
+            const topWrap = el('historyTop');
+            const restWrap = el('historyRest');
+
+            if (!Array.isArray(history) || history.length === 0) {
+                topWrap.innerHTML = '<div class="small">No history yet.</div>';
+                restWrap.innerHTML = '';
+                return;
+            }
+
+            // Sort newest → oldest by date (YYYY-MM-DD), fall back if needed
+            const sorted = [...history].sort((a, b) => {
+                const da = parseYmd(a.date); const db = parseYmd(b.date);
+                if (!isNaN(db) && !isNaN(da)) return db - da;
+                return String(b.date).localeCompare(String(a.date));
+                // if you want strict newest-first even for non-ISO, keep as is
+            });
+
+            // Take last 3 completed
+            const top3 = sorted.filter(h => h.cleared).slice(0, 3);
+
+            // Everything else goes in the scrollable list
+            const topIds = new Set(top3.map(h => h.date + '|' + (h.cleared ? 1 : 0)));
+            const rest = sorted.filter(h => !topIds.has(h.date + '|' + (h.cleared ? 1 : 0)));
+
+            const itemHTML = (h) => {
+                const dt = parseYmd(h.date);
+                const nice = isNaN(dt)
+                    ? h.date
+                    : dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+                return `<div class="task">
+      <div class="grow">
+        <div class="title">${nice} — ${h.cleared ? '<span class="hl">CLEARED ✅</span>' : '<span style="color:#ff9aa7">MISSED ❌</span>'}</div>
+        <div class="meta">XP +${h.earnedXP || 0}${h.punishmentsApplied?.length ? (' • Punishment: ' + h.punishmentsApplied.join(', ')) : ''}</div>
+      </div>
+      <span class="chip">Lv ${h.snapshot?.level ?? state.level}</span>
+    </div>`;
+            };
+
+            topWrap.innerHTML = top3.length
+                ? top3.map(itemHTML).join('')
+                : '<div class="small">No completed days yet.</div>';
+
+            restWrap.innerHTML = rest.length
+                ? rest.map(itemHTML).join('')
+                : '<div class="small">No more entries.</div>';
+        }
+
+
+        /* Notifications */
         function scheduleReminder() {
             if (!('Notification' in window)) return;
             if (Notification.permission !== 'granted') return;
             const now = new Date(); const [h, m] = ('20:00').split(':').map(Number);
             const next = new Date(); next.setHours(h, m, 0, 0); if (next <= now) next.setDate(next.getDate() + 1);
             setTimeout(() => { new Notification('Solo Leveling — Daily', { body: 'Finish all four Non-Negotiables 🔥' }); scheduleReminder(); }, next - now);
+        }
+
+        /* Reset everything: localStorage + caches + service workers */
+        async function resetAllProgress() {
+            if (!confirm('Reset ALL progress? This will erase XP, streaks, history, calories, plans, and settings.')) return;
+            if (!confirm('Are you absolutely sure? This cannot be undone.')) return;
+
+            const keys = [
+                'sl_settings', 'sl_state', 'sl_history', 'sl_punish', 'sl_titles',
+                'sl_start_date', 'sl_nn_done', 'sl_po_settings', 'sl_po_plan',
+                'sl_cal', 'sl_notifications_enabled'
+            ];
+            keys.forEach(k => localStorage.removeItem(k));
+
+            try {
+                if ('caches' in window) {
+                    const names = await caches.keys();
+                    await Promise.all(names.map(n => caches.delete(n)));
+                }
+            } catch (e) { console.warn('Cache clear failed:', e); }
+
+            try {
+                if (navigator.serviceWorker?.getRegistrations) {
+                    const regs = await navigator.serviceWorker.getRegistrations();
+                    await Promise.all(regs.map(r => r.unregister()));
+                }
+            } catch (e) { console.warn('SW unregister failed:', e); }
+
+            const u = new URL(location.href); u.searchParams.set('reset', Date.now().toString());
+            location.replace(u.toString());
         }
 
         /* Events */
@@ -551,25 +593,17 @@
             window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; btnInstall.style.display = 'inline-block'; });
             btnInstall?.addEventListener('click', async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; btnInstall.style.display = 'none'; });
 
-            document.getElementById('btnNotify').addEventListener('click', async () => {
-                if (!('Notification' in window)) {
-                    alert('Notifications not supported on this device/browser.');
-                    return;
-                }
+            // Notifications button (hide after enabling)
+            el('btnNotify').addEventListener('click', async () => {
+                if (!('Notification' in window)) return alert('Notifications not supported on this device/browser.');
                 const perm = await Notification.requestPermission();
                 if (perm === 'granted') {
-                    // mark enabled and hide the button
                     localStorage.setItem('sl_notifications_enabled', '1');
-                    toast('Notifications enabled ✅', 'good');
-                    updateNotifyButtonVisibility();
-                    // (optional) start your local reminder scheduler
-                    scheduleReminder?.();
-                } else {
-                    toast('Notifications blocked', 'bad');
-                }
+                    toast('Notifications enabled ✅', 'good'); scheduleReminder(); updateNotifyButtonVisibility();
+                } else { toast('Notifications blocked', 'bad'); }
             });
 
-
+            // Claim
             el('btnCompleteDay').addEventListener('click', () => {
                 if (!nnAllDoneToday()) {
                     alert('You must complete ALL four non-negotiables before claiming.');
@@ -578,18 +612,37 @@
                 endOfDayEvaluateStrict();
             });
 
-            // boot
+            // Buttons
+            el('btnGenWeek').addEventListener('click', () => generateNext7DaysPlan());
+            el('btnResetAll').addEventListener('click', resetAllProgress);
+
+            // Calorie controls
+            el('btnAddCal').addEventListener('click', () => {
+                const kcal = parseInt(el('calKcal').value || '0', 10);
+                if (!kcal || kcal <= 0) return alert('Enter kcal (e.g., 650)');
+                const note = el('calNote').value.trim();
+                addCalorieEntry(kcal, note);
+                el('calKcal').value = ''; el('calNote').value = '';
+            });
+            el('btnResetCal').addEventListener('click', () => {
+                if (confirm('Reset today’s calorie entries?')) resetCaloriesToday();
+            });
+            el('calList').addEventListener('click', (e) => {
+                if (!e.target.matches('.btnCalDel')) return;
+                const row = e.target.closest('.task'); if (!row) return;
+                deleteCalorieEntry(row.dataset.id);
+            });
+
+            // Boot
+            updateNotifyButtonVisibility();
             checkRollover();
             refreshKPI();
             renderTasks();
             wireTaskEvents();
             renderHistory();
+            renderPlan();
+            renderCalories();
         });
-
-        // after you successfully get the FCM token:
-        localStorage.setItem('sl_notifications_enabled', '1');
-        document.getElementById('btnEnablePush')?.style.setProperty('display', 'none');
-        updateNotifyButtonVisibility();
     </script>
 </body>
 

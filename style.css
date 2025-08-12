@@ -1,0 +1,261 @@
+:root {
+    --bg: #0b1020;
+    --panel: #111831;
+    --muted: #7a8ab8;
+    --ink: #e8efff;
+    --accent: #39aaff;
+    --accent2: #7c4dff;
+    --danger: #ff5b6e;
+    --success: #35d07f;
+    --gold: #ffcc33;
+    --card: #0e1530;
+    --chip: #1a2446
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 70% -10%, #14305a 0, transparent 60%), var(--bg);
+    color: var(--ink);
+    -webkit-tap-highlight-color: transparent
+}
+
+.app {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px 14px 110px
+}
+
+header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    background: linear-gradient(180deg, var(--bg), #0b1020ee 75%, transparent);
+    padding: 10px 2px 12px;
+    backdrop-filter: saturate(130%) blur(6px);
+    z-index: 5
+}
+
+.logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #0e1530 url("icon.ico") center/cover no-repeat;
+    box-shadow: 0 0 20px #39aaff88, inset 0 0 10px #39aaff55
+}
+
+h1 {
+    font-size: 20px;
+    margin: 0;
+    letter-spacing: .3px
+}
+
+.sub {
+    font-size: 12px;
+    color: var(--muted)
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap
+}
+
+.grow {
+    flex: 1
+}
+
+.scrollwrap {
+    max-height: 260px;
+    overflow: auto;
+    padding-right: 4px
+}
+
+button {
+    background: linear-gradient(180deg, var(--accent), #0f6dbd);
+    border: 0;
+    color: #fff;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 16px #39aaff33, inset 0 -2px 0 #0a4f8c;
+    transition: filter .15s, transform .03s
+}
+
+button:active {
+    transform: translateY(1px)
+}
+
+.ghost {
+    background: #1a2446;
+    color: #d7e6ff;
+    box-shadow: none
+}
+
+.gold {
+    background: linear-gradient(180deg, #ffd267, #c49c1f);
+    color: #231b00
+}
+
+.danger {
+    background: linear-gradient(180deg, #ff7b87, #c83b4a)
+}
+
+.panel {
+    background: linear-gradient(180deg, #0f1834, #0c1229);
+    border: 1px solid #243059;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 10px 30px #08102866
+}
+
+.grid {
+    display: grid;
+    gap: 12px
+}
+
+.grid.cols-3 {
+    grid-template-columns: 1.3fr 1fr 1fr
+}
+
+@media(max-width:980px) {
+    .grid.cols-3 {
+        grid-template-columns: 1fr
+    }
+}
+
+.stat {
+    background: var(--card);
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #202a52;
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.chip {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--chip);
+    border: 1px solid #253261;
+    font-size: 12px
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.task {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: var(--card);
+    border: 1px solid #202a52;
+    border-radius: 12px;
+    padding: 10px
+}
+
+.task input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: var(--accent)
+}
+
+.task .title {
+    font-weight: 600
+}
+
+.task .meta {
+    font-size: 12px;
+    color: var(--muted)
+}
+
+.kpi {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+progress {
+    width: 100%;
+    height: 12px;
+    border: 0;
+    background: #101833;
+    border-radius: 10px;
+    overflow: hidden
+}
+
+progress::-webkit-progress-bar {
+    background: #101833
+}
+
+progress::-webkit-progress-value {
+    background: linear-gradient(90deg, var(--accent), var(--accent2))
+}
+
+.foot {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    background: linear-gradient(180deg, transparent, #0b1020 35%)
+}
+
+.foot .bar {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #0f1834;
+    border: 1px solid #243059;
+    border-radius: 14px;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between
+}
+
+.small {
+    font-size: 12px;
+    color: var(--muted)
+}
+
+.ok {
+    color: var(--success)
+}
+
+.bad {
+    color: #ff9aa7
+}
+
+.hl {
+    color: var(--gold);
+    font-weight: 700
+}
+
+input[type="number"],
+input[type="text"],
+select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    background: #0e1631;
+    color: #e8efff;
+    border: 1px solid #22305c
+}
