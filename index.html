@@ -521,24 +521,20 @@
     <script>
         /* ===================== SHEETS BACKEND CONFIG ===================== */
         /* Replace with your deployed Apps Script Web App URL */
-        const SHEETS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwZZiJkc8IGQs0D9z2F8CO2Z-BpYrIlITWSu3TvQgodk-Cxvt-MX8NKeIbDTvlLx8Nj/exec';
+        const SHEETS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxDv-aWJZ7arMC72hlRKNJ-0-zSULqnn0xzICuwjJLGbvn4tCG2sXz4GBixCBNNAsDtxg/exec';
 
         async function sheetsApi(action, payload) {
-            const form = new URLSearchParams({
-                action,
-                ...Object.fromEntries(Object.entries(payload).map(([k, v]) => [k, String(v)]))
-            });
-
+            const form = new URLSearchParams({ action, ...Object.fromEntries(Object.entries(payload).map(([k, v]) => [k, String(v)])) });
             const res = await fetch('/api/sheets', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
                 body: form.toString()
             });
-
             const data = await res.json();
             if (!data.ok) throw new Error(data.error || 'Request failed');
             return data;
         }
+
 
         /* --------- PWA SW registration --------- */
         if ('serviceWorker' in navigator) {

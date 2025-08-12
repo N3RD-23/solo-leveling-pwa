@@ -1,7 +1,6 @@
 [functions]
   directory = "netlify/functions"
 
-# Nice clean path for your API
 [[redirects]]
   from = "/api/sheets"
   to = "/.netlify/functions/sheets"
