@@ -4,22 +4,393 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-    <title>Solo Leveling</title>
+    <title>Solo Leveling — Daily Grind</title>
     <meta name="theme-color" content="#0b1020" />
     <link rel="icon" type="image/x-icon" href="icon.ico" />
     <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg: #0b1020;
+            --panel: #111831;
+            --muted: #7a8ab8;
+            --ink: #e8efff;
+            --accent: #39aaff;
+            --accent2: #7c4dff;
+            --danger: #ff5b6e;
+            --success: #35d07f;
+            --gold: #ffcc33;
+            --card: #0e1530;
+            --chip: #1a2446
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: radial-gradient(1200px 600px at 70% -10%, #14305a 0, transparent 60%), var(--bg);
+            color: var(--ink);
+            -webkit-tap-highlight-color: transparent
+        }
+
+        /* App layout */
+        .app {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 16px 14px 110px;
+            display: none
+        }
+
+        .app.authed {
+            display: block
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            background: linear-gradient(180deg, var(--bg), #0b1020ee 75%, transparent);
+            padding: 10px 2px 12px;
+            backdrop-filter: saturate(130%) blur(6px);
+            z-index: 5
+        }
+
+        .logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #0e1530 url("icon.ico") center/cover no-repeat;
+            box-shadow: 0 0 20px #39aaff88, inset 0 0 10px #39aaff55
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0;
+            letter-spacing: .3px
+        }
+
+        .sub {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .grow {
+            flex: 1
+        }
+
+        button {
+            background: linear-gradient(180deg, var(--accent), #0f6dbd);
+            border: 0;
+            color: #fff;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 16px #39aaff33, inset 0 -2px 0 #0a4f8c;
+            transition: filter .15s, transform .03s
+        }
+
+        button:active {
+            transform: translateY(1px)
+        }
+
+        .ghost {
+            background: #1a2446;
+            color: #d7e6ff;
+            box-shadow: none
+        }
+
+        .gold {
+            background: linear-gradient(180deg, #ffd267, #c49c1f);
+            color: #231b00
+        }
+
+        .danger {
+            background: linear-gradient(180deg, #ff7b87, #c83b4a)
+        }
+
+        .panel {
+            background: linear-gradient(180deg, #0f1834, #0c1229);
+            border: 1px solid #243059;
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 10px 30px #08102866
+        }
+
+        .grid {
+            display: grid;
+            gap: 12px
+        }
+
+        .grid.cols-3 {
+            grid-template-columns: 1.3fr 1fr 1fr
+        }
+
+        @media(max-width:980px) {
+            .grid.cols-3 {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .stat {
+            background: var(--card);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #202a52;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .chip {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--chip);
+            border: 1px solid #253261;
+            font-size: 12px
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .task {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: var(--card);
+            border: 1px solid #202a52;
+            border-radius: 12px;
+            padding: 10px
+        }
+
+        .task input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--accent)
+        }
+
+        .task .title {
+            font-weight: 600
+        }
+
+        .task .meta {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .kpi {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        progress {
+            width: 100%;
+            height: 12px;
+            border: 0;
+            background: #101833;
+            border-radius: 10px;
+            overflow: hidden
+        }
+
+        progress::-webkit-progress-bar {
+            background: #101833
+        }
+
+        progress::-webkit-progress-value {
+            background: linear-gradient(90deg, var(--accent), var(--accent2))
+        }
+
+        .foot {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 10px;
+            background: linear-gradient(180deg, transparent, #0b1020 35%)
+        }
+
+        .foot .bar {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #0f1834;
+            border: 1px solid #243059;
+            border-radius: 14px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .small {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .ok {
+            color: var(--success)
+        }
+
+        .bad {
+            color: #ff9aa7
+        }
+
+        .hl {
+            color: var(--gold);
+            font-weight: 700
+        }
+
+        input[type="number"],
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            background: #0e1631;
+            color: #e8efff;
+            border: 1px solid #22305c
+        }
+
+        .scrollwrap {
+            max-height: 260px;
+            overflow: auto;
+            padding-right: 4px
+        }
+
+        /* Auth screen */
+        .auth {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        .auth .card {
+            width: min(560px, 92vw);
+            background: linear-gradient(180deg, #0f1834, #0c1229);
+            border: 1px solid #243059;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 20px 60px #00000066
+        }
+
+        .auth h2 {
+            margin: 6px 0 4px
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px
+        }
+
+        .brand .logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px
+        }
+
+        .err {
+            color: #ff9aa7;
+            font-size: 12px;
+            min-height: 18px;
+            margin-top: 6px
+        }
+
+        .auth .row {
+            align-items: flex-end
+        }
+    </style>
 </head>
 
 <body>
-    <div class="app">
+
+    <!-- ===================== AUTH (Login / Register via Google Sheets) ===================== -->
+    <section id="auth" class="auth">
+        <div class="card">
+            <div class="brand">
+                <div class="logo" aria-hidden="true" style="box-shadow:none"></div>
+                <div>
+                    <h2 style="margin:0">Solo Leveling — Sign In</h2>
+                    <div class="small">Use your account or register</div>
+                </div>
+            </div>
+
+            <!-- Login -->
+            <div id="loginForm" class="grid" style="margin-top:10px">
+                <div>
+                    <label class="small">Username</label>
+                    <input id="loginUser" type="text" autocomplete="username" placeholder="Username">
+                </div>
+                <div>
+                    <label class="small">Password</label>
+                    <input id="loginPass" type="password" autocomplete="current-password" placeholder="Password">
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px">
+                <button id="btnLogin" class="gold">Log In</button>
+                <button id="btnShowReg" class="ghost">Register</button>
+                <div class="grow"></div>
+                <button id="btnClearSession" class="danger">Clear Session</button>
+            </div>
+
+            <!-- Register -->
+            <div id="regForm" class="grid" style="margin-top:16px; display:none">
+                <div><label class="small">Username</label><input id="regUser" type="text" placeholder="Username"></div>
+                <div><label class="small">Password</label><input id="regPass" type="password" placeholder="Password">
+                </div>
+                <div><label class="small">Birthdate</label><input id="regDob" type="date"></div>
+                <div><label class="small">Weight (kg)</label><input id="regWeight" type="number" step="0.1" min="1">
+                </div>
+                <div><label class="small">Height (cm)</label><input id="regHeight" type="number" step="0.1" min="1">
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <button id="btnDoRegister" class="gold">Create Account</button>
+                    <button id="btnCancelReg" class="ghost">Cancel</button>
+                </div>
+            </div>
+
+            <div id="authErr" class="err"></div>
+            <div class="small" style="opacity:.7;margin-top:6px">Note: Make sure to double check your credentials</div>
+        </div>
+    </section>
+
+    <!-- ===================== APP (hidden until auth) ===================== -->
+    <div id="app" class="app">
         <header>
             <div class="logo" aria-hidden="true"></div>
             <div>
-                <h1>Solo Leveling</h1>
-                <div class="sub">Non-Negotiables only • Weekly plan • Calorie tracking</div>
+                <h1>Solo Leveling — Daily Grind</h1>
+                <div class="sub">Non-Negotiables • Weekly plan • Calorie tracking</div>
             </div>
             <div class="grow"></div>
+            <span id="whoami" class="chip" title="Logged in as"></span>
+            <button id="btnLogout" class="ghost">Log Out</button>
             <button id="btnInstall" class="ghost" style="display:none">Install</button>
         </header>
 
@@ -37,11 +408,6 @@
                     <span class="chip">Coins <b id="coins">0</b></span>
                     <span class="chip">Streak <b id="streak">0</b>🔥</span>
                     <span class="chip">HP <b id="hp">100</b>/100</span>
-                </div>
-                <div class="panel"
-                    style="margin-top:12px;background:linear-gradient(180deg,#0f2a20,#091715);border-color:#1f4a3a">
-                    <b>Unlocked Titles</b>
-                    <div id="titles" class="small">E-Rank</div>
                 </div>
                 <progress id="xpBar" max="100" value="0"></progress>
 
@@ -70,7 +436,7 @@
                             <div><b>Scheme</b></div>
                             <div class="small">How to progress?</div>
                         </div>
-                        <select title="poScheme" id="poScheme" style="width:180px">
+                        <select id="poScheme" style="width:180px">
                             <option value="load">Load +2.5 kg (main lifts)</option>
                             <option value="volume">Volume +1 rep (accessories)</option>
                         </select>
@@ -80,14 +446,19 @@
                             <div><b>Main Lift Increment</b></div>
                             <div class="small">kg</div>
                         </div>
-                        <input aria-label="" type="number" id="poIncKg" value="2.5" step="0.5" min="0.5"
-                            style="width:110px" placeholder="2.5" title="Increment">
+                        <input type="number" id="poIncKg" value="2.5" step="0.5" min="0.5" style="width:110px">
                     </div>
                 </div>
                 <div class="row" style="margin-top:8px">
                     <button id="btnGenWeek" class="ghost">Generate Next 7 Days</button>
                 </div>
                 <div id="planList" class="list" style="margin-top:10px"></div>
+
+                <div class="panel"
+                    style="margin-top:12px;background:linear-gradient(180deg,#0f2a20,#091715);border-color:#1f4a3a">
+                    <b>Current Title</b>
+                    <div id="titles" class="small">Apprentice</div>
+                </div>
 
                 <div class="panel"
                     style="margin-top:12px;background:linear-gradient(180deg,#2a0f20,#170912);border-color:#4a1f31">
@@ -104,7 +475,7 @@
                 <div class="stat">
                     <div class="grow">
                         <div><b>Add calories</b></div>
-                        <div class="small">Hard minimum: <span id="calMinChip" class="chip">3500 kcal</span></div>
+                        <div class="small">Hard minimum: <span id="calMinChip" class="chip">2200 kcal</span></div>
                     </div>
                 </div>
                 <div class="grid">
@@ -115,7 +486,7 @@
                     <button id="btnAddCal" class="ghost">Add Entry</button>
                     <button id="btnResetCal" class="danger">Reset Today</button>
                     <div class="grow"></div>
-                    <span id="calStatus" class="chip">0 / 3500</span>
+                    <span id="calStatus" class="chip">0 / 2200</span>
                 </div>
                 <div id="calList" class="list" style="margin-top:10px"></div>
 
@@ -125,11 +496,9 @@
                         <span class="chip">Completed Days: <b id="daysCleared">0</b></span>
                     </div>
 
-                    <!-- Last 3 completed (pinned) -->
                     <div style="margin-top:10px;font-weight:600">Recent clears (last 3)</div>
                     <div id="historyTop" class="list" style="margin-top:6px"></div>
 
-                    <!-- Scrollable remainder -->
                     <div style="margin-top:12px;font-weight:600">All history</div>
                     <div class="scrollwrap" style="margin-top:6px">
                         <div id="historyRest" class="list"></div>
@@ -150,6 +519,27 @@
     </div>
 
     <script>
+        /* ===================== SHEETS BACKEND CONFIG ===================== */
+        /* Replace with your deployed Apps Script Web App URL */
+        const SHEETS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwZZiJkc8IGQs0D9z2F8CO2Z-BpYrIlITWSu3TvQgodk-Cxvt-MX8NKeIbDTvlLx8Nj/exec';
+
+        async function sheetsApi(action, payload) {
+            const form = new URLSearchParams({
+                action,
+                ...Object.fromEntries(Object.entries(payload).map(([k, v]) => [k, String(v)]))
+            });
+
+            const res = await fetch('/api/sheets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                body: form.toString()
+            });
+
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error || 'Request failed');
+            return data;
+        }
+
         /* --------- PWA SW registration --------- */
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -166,26 +556,20 @@
         const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
 
         /* ---- Date helpers (Safari-safe) ---- */
-        function yyyymmdd(d) {
-            const y = d.getFullYear();
-            const m = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            return `${y}-${m}-${day}`;
-        }
-        function parseYmd(ymd) {
-            const [y, m, d] = (ymd || '').split('-').map(n => parseInt(n, 10));
-            if (!y || !m || !d) return new Date(NaN);
-            return new Date(y, m - 1, d); // local time
-        }
+        function yyyymmdd(d) { const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0'); return `${y}-${m}-${day}`; }
+        function parseYmd(ymd) { const [y, m, d] = (ymd || '').split('-').map(n => parseInt(n, 10)); if (!y || !m || !d) return new Date(NaN); return new Date(y, m - 1, d); }
         function addDays(d, dx) { const n = new Date(d); n.setDate(n.getDate() + dx); return n; }
         const todayStr = () => yyyymmdd(new Date());
 
+        /* ---- Auth helpers ---- */
+        function isAuthed() { return !!localStorage.getItem('sl_auth_user'); }
+        function getUser() { return localStorage.getItem('sl_auth_user') || ''; }
+        function setUser(u) { if (u) localStorage.setItem('sl_auth_user', u); else localStorage.removeItem('sl_auth_user'); }
+        function showApp() { document.getElementById('app').classList.add('authed'); document.getElementById('auth').style.display = 'none'; el('whoami').textContent = getUser(); }
+        function showLogin(msg = '') { document.getElementById('app').classList.remove('authed'); document.getElementById('auth').style.display = 'flex'; if (msg) el('authErr').textContent = msg; }
+
         /* ---- State ---- */
-        let settings = load('sl_settings', { goal: 9, xpPerTask: 10, xpPerClear: 40, hpLoss: 15 });
-        let state = load('sl_state', { xp: 0, coins: 0, level: 1, hp: 100, streak: 0, daysCleared: 0, lastDate: todayStr() });
-        let history = load('sl_history', []);
-        let punishQ = load('sl_punish', []);
-        let titles = load('sl_titles', ['E-Rank']);
+        let settings, state, history, punishQ, titles;
 
         /* ---- Leveling ---- */
         const xpForLevel = n => 100 * n * n;
@@ -194,12 +578,10 @@
             state.xp = Number(state.xp || 0) + Number(amount || 0);
             const newLevel = levelFromXP(state.xp);
             if (newLevel > state.level) {
-                state.level = newLevel;
-                state.coins += 10 * (newLevel - 1);
-                const tiers = ['E-Rank', 'D-Rank', 'C-Rank', 'B-Rank', 'A-Rank', 'S-Rank', 'Monarch'];
+                state.level = newLevel; state.coins += 10 * (newLevel - 1);
+                const tiers = ['Apprentice', 'Hunter', 'Shadow Walker', 'Elite Raider', 'S-Rank', 'Monarch'];
                 const currentTitle = tiers[Math.min(tiers.length - 1, Math.floor(newLevel / 5))];
-                // store ONLY current title
-                titles = [currentTitle];
+                titles = [currentTitle]; // show only current title
             }
             save('sl_state', state); save('sl_titles', titles);
         }
@@ -223,7 +605,7 @@
             el('xpBar').max = xpForLevel(state.level);
             el('xpBar').value = state.xp;
             el('daysCleared').textContent = state.daysCleared;
-            el('titles').textContent = titles[0] || 'Novice';
+            el('titles').textContent = titles[0] || 'Apprentice';
             el('todayChip').textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
             el('punishQueue').innerHTML = punishQ.length ? ('<ul style="margin:6px 0 0 16px">' + punishQ.map(p => `<li>${p}</li>`).join('') + '</ul>') : '<div class="small">Empty (stay sharp!)</div>';
         }
@@ -240,14 +622,8 @@
 
         /* ---------------- Non-Negotiables only (weekly progression) ---------------- */
         let startDate = localStorage.getItem('sl_start_date');
-        if (!startDate) { startDate = new Date().toISOString(); localStorage.setItem('sl_start_date', startDate); }
-
-        function weeksSinceStart() {
-            const start = new Date(startDate);
-            const now = new Date();
-            const days = Math.floor((now - start) / 86400000);
-            return Math.floor(days / 7);
-        }
+        function ensureStartDate() { if (!startDate) { startDate = new Date().toISOString(); localStorage.setItem('sl_start_date', startDate); } }
+        function weeksSinceStart() { const start = new Date(startDate); const now = new Date(); const days = Math.floor((now - start) / 86400000); return Math.floor(days / 7); }
 
         function buildNonNegotiables() {
             const w = weeksSinceStart();
@@ -297,7 +673,7 @@
     </div>
   `).join('');
             const totalPts = tasks.reduce((a, b) => a + b.points, 0);
-            if (settings.goal !== totalPts) { settings.goal = totalPts; save('sl_settings', settings); }
+            settings.goal = totalPts; save('sl_settings', settings);
         }
 
         function wireTaskEvents() {
@@ -316,7 +692,7 @@
 
                 if (e.target.checked) {
                     state.coins = Math.max(0, state.coins + 1);
-                    grantXP(per); // also saves state + titles
+                    grantXP(per); // saves state + titles
                     state.hp = clamp(state.hp + HP_PER_TOGGLE, 0, 100);
                 } else {
                     state.xp = Math.max(0, state.xp - per);
@@ -349,7 +725,7 @@
             }
 
             const snapshot = { xp: state.xp, level: state.level, coins: state.coins, streak: state.streak, hp: state.hp };
-            history.unshift({ date: state.lastDate, cleared, earnedXP, punishmentsApplied: pItems, snapshot });
+            history.unshift({ date: todayStr(), cleared, earnedXP, punishmentsApplied: pItems, snapshot });
             save('sl_history', history);
 
             const all = getAllDoneMap(); delete all[todayStr()]; setAllDoneMap(all);
@@ -366,17 +742,12 @@
         }
 
         /* ---------------- Progressive Overload Plan (rebuilt & Safari-safe) ---------------- */
-        const poSettings = load('sl_po_settings', {
-            scheme: 'load', incKg: 2.5,
-            mainLifts: { squat: 40, bench: 30, deadlift: 60, ohp: 20, pullups: 6 }
-        });
+        const poDefaults = { scheme: 'load', incKg: 2.5, mainLifts: { squat: 40, bench: 30, deadlift: 60, ohp: 20, pullups: 6 } };
+        let poSettings = load('sl_po_settings', poDefaults);
         let upcomingPlan = load('sl_po_plan', []); // [{date:'YYYY-MM-DD', items:[{title, notes}]}]
 
         const roundTo = (n, step) => Math.round(n / step) * step;
-
-        /* Build items for a plan day by index 0..6 using current lifts */
         function buildPlanDayItems(dayIndex, L) {
-            // Day template: A / rest / B / rest / light+bench / conditioning / active
             if (dayIndex === 0) {
                 return [
                     { title: `Squat 3×5 @ ${L.squat} kg`, notes: 'Main lift' },
@@ -405,13 +776,10 @@
                 return [{ title: `Active Recovery — walk 6 km or 8k+ steps`, notes: 'Mobility 10 min' }];
             }
         }
-
-        /* Generate next 7 days starting tomorrow (or from provided start) */
-        function generateNext7DaysPlan(startYmd = null) {
+        function generateNext7DaysPlan() {
             const incKg = Math.max(0.5, parseFloat(el('poIncKg').value || poSettings.incKg));
             const scheme = el('poScheme').value || poSettings.scheme;
 
-            // Copy current lifts
             const L = JSON.parse(JSON.stringify(poSettings.mainLifts));
             if (scheme === 'load') {
                 L.squat = roundTo(L.squat + incKg, 0.5);
@@ -422,7 +790,7 @@
                 L.pullups += 1;
             }
 
-            const startDate = startYmd ? parseYmd(startYmd) : addDays(new Date(), 1);
+            const startDate = addDays(new Date(), 1);
             const plan = [];
             for (let i = 0; i < 7; i++) {
                 const date = yyyymmdd(addDays(startDate, i));
@@ -430,7 +798,6 @@
                 plan.push({ date, items });
             }
 
-            // persist
             upcomingPlan = plan;
             poSettings.mainLifts = L;
             poSettings.scheme = scheme;
@@ -440,8 +807,6 @@
             renderPlan();
             toast('Next 7 days generated ✅', 'good');
         }
-
-        /* Render plan using safe parser */
         function renderPlan() {
             const wrap = el('planList');
             if (!wrap) return;
@@ -460,10 +825,9 @@
         }
 
         /* ---------------- Daily Calorie Tracker (hard minimum) ---------------- */
-        const CAL_MIN = 3500; // hardcoded minimum
+        const CAL_MIN = 2200; // hardcoded minimum
         function loadCalDay() { const all = load('sl_cal', {}); return all[todayStr()] || { entries: [], total: 0 }; }
         function saveCalDay(day) { const all = load('sl_cal', {}); all[todayStr()] = day; save('sl_cal', all); }
-
         function renderCalories() {
             el('calMinChip').textContent = `${CAL_MIN} kcal`;
             const day = loadCalDay();
@@ -477,7 +841,6 @@
       <button class="ghost btnCalDel" type="button" aria-label="delete">🗑️</button>
     </div>
   `).join('') || '<div class="small">No entries yet.</div>';
-
             const status = el('calStatus');
             status.textContent = `${day.total} / ${CAL_MIN}`;
             status.className = 'chip ' + (day.total >= CAL_MIN ? 'ok' : 'bad');
@@ -497,7 +860,7 @@
         }
         function resetCaloriesToday() { saveCalDay({ entries: [], total: 0 }); renderCalories(); }
 
-        /* ---------------- History render ---------------- */
+        /* ---------------- History split view ---------------- */
         function renderHistory() {
             const topWrap = el('historyTop');
             const restWrap = el('historyRest');
@@ -508,18 +871,13 @@
                 return;
             }
 
-            // Sort newest → oldest by date (YYYY-MM-DD), fall back if needed
             const sorted = [...history].sort((a, b) => {
                 const da = parseYmd(a.date); const db = parseYmd(b.date);
                 if (!isNaN(db) && !isNaN(da)) return db - da;
                 return String(b.date).localeCompare(String(a.date));
-                // if you want strict newest-first even for non-ISO, keep as is
             });
 
-            // Take last 3 completed
             const top3 = sorted.filter(h => h.cleared).slice(0, 3);
-
-            // Everything else goes in the scrollable list
             const topIds = new Set(top3.map(h => h.date + '|' + (h.cleared ? 1 : 0)));
             const rest = sorted.filter(h => !topIds.has(h.date + '|' + (h.cleared ? 1 : 0)));
 
@@ -546,7 +904,6 @@
                 : '<div class="small">No more entries.</div>';
         }
 
-
         /* Notifications */
         function scheduleReminder() {
             if (!('Notification' in window)) return;
@@ -558,42 +915,48 @@
 
         /* Reset everything: localStorage + caches + service workers */
         async function resetAllProgress() {
-            if (!confirm('Reset ALL progress? This will erase XP, streaks, history, calories, plans, and settings.')) return;
+            if (!confirm('Reset ALL progress? This will erase XP, streaks, history, calories, plans, settings, and log you out.')) return;
             if (!confirm('Are you absolutely sure? This cannot be undone.')) return;
 
             const keys = [
                 'sl_settings', 'sl_state', 'sl_history', 'sl_punish', 'sl_titles',
                 'sl_start_date', 'sl_nn_done', 'sl_po_settings', 'sl_po_plan',
-                'sl_cal', 'sl_notifications_enabled'
+                'sl_cal', 'sl_notifications_enabled', 'sl_auth_user', 'sl_profile'
             ];
             keys.forEach(k => localStorage.removeItem(k));
 
-            try {
-                if ('caches' in window) {
-                    const names = await caches.keys();
-                    await Promise.all(names.map(n => caches.delete(n)));
-                }
-            } catch (e) { console.warn('Cache clear failed:', e); }
-
-            try {
-                if (navigator.serviceWorker?.getRegistrations) {
-                    const regs = await navigator.serviceWorker.getRegistrations();
-                    await Promise.all(regs.map(r => r.unregister()));
-                }
-            } catch (e) { console.warn('SW unregister failed:', e); }
+            try { if ('caches' in window) { const names = await caches.keys(); await Promise.all(names.map(n => caches.delete(n))); } } catch (e) { }
+            try { if (navigator.serviceWorker?.getRegistrations) { const regs = await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r => r.unregister())); } } catch (e) { }
 
             const u = new URL(location.href); u.searchParams.set('reset', Date.now().toString());
             location.replace(u.toString());
         }
 
-        /* Events */
-        document.addEventListener('DOMContentLoaded', () => {
-            // Install button (A2HS)
+        /* ---------- App boot (after auth) ---------- */
+        function bootApp() {
+            // init persisted
+            settings = load('sl_settings', { goal: 9, xpPerTask: 10, xpPerClear: 40, hpLoss: 15 });
+            state = load('sl_state', { xp: 0, coins: 0, level: 1, hp: 100, streak: 0, daysCleared: 0, lastDate: todayStr() });
+            history = load('sl_history', []);
+            punishQ = load('sl_punish', []);
+            titles = load('sl_titles', ['Apprentice']);
+
+            ensureStartDate();
+            updateNotifyButtonVisibility();
+            checkRollover();
+            refreshKPI();
+            renderTasks();
+            wireTaskEvents();
+            renderHistory();
+            renderPlan();
+            renderCalories();
+
+            // A2HS
             let deferredPrompt; const btnInstall = el('btnInstall');
             window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; btnInstall.style.display = 'inline-block'; });
             btnInstall?.addEventListener('click', async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; btnInstall.style.display = 'none'; });
 
-            // Notifications button (hide after enabling)
+            // Notifications
             el('btnNotify').addEventListener('click', async () => {
                 if (!('Notification' in window)) return alert('Notifications not supported on this device/browser.');
                 const perm = await Notification.requestPermission();
@@ -605,18 +968,13 @@
 
             // Claim
             el('btnCompleteDay').addEventListener('click', () => {
-                if (!nnAllDoneToday()) {
-                    alert('You must complete ALL four non-negotiables before claiming.');
-                    return;
-                }
+                if (!nnAllDoneToday()) { alert('You must complete ALL four non-negotiables before claiming.'); return; }
                 endOfDayEvaluateStrict();
             });
 
-            // Buttons
-            el('btnGenWeek').addEventListener('click', () => generateNext7DaysPlan());
-            el('btnResetAll').addEventListener('click', resetAllProgress);
-
-            // Calorie controls
+            // Plan + Calories
+            el('btnGenWeek').addEventListener('click', generateNext7DaysPlan);
+            el('btnResetCal').addEventListener('click', () => { if (confirm('Reset today’s calorie entries?')) resetCaloriesToday(); });
             el('btnAddCal').addEventListener('click', () => {
                 const kcal = parseInt(el('calKcal').value || '0', 10);
                 if (!kcal || kcal <= 0) return alert('Enter kcal (e.g., 650)');
@@ -624,24 +982,96 @@
                 addCalorieEntry(kcal, note);
                 el('calKcal').value = ''; el('calNote').value = '';
             });
-            el('btnResetCal').addEventListener('click', () => {
-                if (confirm('Reset today’s calorie entries?')) resetCaloriesToday();
-            });
             el('calList').addEventListener('click', (e) => {
                 if (!e.target.matches('.btnCalDel')) return;
                 const row = e.target.closest('.task'); if (!row) return;
                 deleteCalorieEntry(row.dataset.id);
             });
 
-            // Boot
-            updateNotifyButtonVisibility();
-            checkRollover();
-            refreshKPI();
-            renderTasks();
-            wireTaskEvents();
-            renderHistory();
-            renderPlan();
-            renderCalories();
+            // Reset
+            el('btnResetAll').addEventListener('click', resetAllProgress);
+
+            // Logout
+            el('btnLogout').addEventListener('click', () => {
+                setUser('');
+                localStorage.removeItem('sl_profile');
+                showLogin();
+            });
+        }
+
+        /* ---------- Auth screen wiring ---------- */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Toggle Reg UI
+            el('btnShowReg').addEventListener('click', () => {
+                document.getElementById('regForm').style.display = 'grid';
+                document.getElementById('loginForm').style.display = 'grid';
+                // hide login inputs (keep grid style consistent)
+                el('loginUser').closest('div').style.display = 'none';
+                el('loginPass').closest('div').style.display = 'none';
+                el('authErr').textContent = '';
+            });
+            el('btnCancelReg').addEventListener('click', () => {
+                document.getElementById('regForm').style.display = 'none';
+                // show login inputs again
+                el('loginUser').closest('div').style.display = '';
+                el('loginPass').closest('div').style.display = '';
+                el('authErr').textContent = '';
+            });
+
+            // Log in
+            el('btnLogin').addEventListener('click', async () => {
+                const username = (el('loginUser').value || '').trim();
+                const password = el('loginPass').value || '';
+                if (!username || !password) { el('authErr').textContent = 'Enter username and password.'; return; }
+                try {
+                    const { user } = await sheetsApi('login', { username, password });
+                    localStorage.setItem('sl_profile', JSON.stringify(user)); // birthdate, weight, height
+                    setUser(user.username);
+                    el('authErr').textContent = '';
+                    showApp();
+                    bootApp();
+                } catch (e) {
+                    el('authErr').textContent = e.message || 'Login failed';
+                }
+            });
+
+            // Register
+            el('btnDoRegister').addEventListener('click', async () => {
+                const username = (el('regUser').value || '').trim();
+                const password = el('regPass').value || '';
+                const birthdate = el('regDob').value || '';
+                const weight = parseFloat(el('regWeight').value || '0');
+                const height = parseFloat(el('regHeight').value || '0');
+                if (!username || !password || !birthdate || !weight || !height) {
+                    el('authErr').textContent = 'Fill all fields.';
+                    return;
+                }
+                try {
+                    const { user } = await sheetsApi('register', { username, password, birthdate, weight, height });
+                    localStorage.setItem('sl_profile', JSON.stringify(user));
+                    setUser(user.username);
+                    el('authErr').textContent = '';
+                    showApp();
+                    bootApp();
+                } catch (e) {
+                    el('authErr').textContent = e.message || 'Registration failed';
+                }
+            });
+
+            // Clear local session
+            el('btnClearSession').addEventListener('click', () => {
+                setUser('');
+                localStorage.removeItem('sl_profile');
+                el('authErr').textContent = 'Session cleared. You can log in or register.';
+            });
+
+            // Auto-login if session exists
+            if (isAuthed()) {
+                showApp();
+                bootApp();
+            } else {
+                showLogin();
+            }
         });
     </script>
 </body>
