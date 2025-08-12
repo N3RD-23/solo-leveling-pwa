@@ -87,8 +87,7 @@
             flex: 1
         }
 
-        button,
-        .btn {
+        button {
             background: linear-gradient(180deg, var(--accent), #0f6dbd);
             border: 0;
             color: #fff;
@@ -110,13 +109,13 @@
             box-shadow: none
         }
 
-        .danger {
-            background: linear-gradient(180deg, #ff7b87, #c83b4a)
-        }
-
         .gold {
             background: linear-gradient(180deg, #ffd267, #c49c1f);
             color: #231b00
+        }
+
+        .danger {
+            background: linear-gradient(180deg, #ff7b87, #c83b4a)
         }
 
         .panel {
@@ -150,10 +149,6 @@
             display: flex;
             align-items: center;
             gap: 10px
-        }
-
-        .stat b {
-            font-size: 18px
         }
 
         .chip {
@@ -246,56 +241,6 @@
             color: var(--muted)
         }
 
-        .title-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px
-        }
-
-        .punish {
-            background: linear-gradient(180deg, #2a0f20, #170912);
-            border-color: #4a1f31
-        }
-
-        .reward {
-            background: linear-gradient(180deg, #0f2a20, #091715);
-            border-color: #1f4a3a
-        }
-
-        input[type="text"],
-        input[type="number"],
-        input[type="time"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            background: #0e1631;
-            color: #ink;
-            border: 1px solid #22305c
-        }
-
-        label {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        .hl {
-            color: var(--gold);
-            font-weight: 700
-        }
-
-        .empty {
-            opacity: .6;
-            text-align: center;
-            padding: 16px 8px
-        }
-
-        .nn {
-            border: 1px dashed #31508a
-        }
-
         .ok {
             color: var(--success)
         }
@@ -304,9 +249,9 @@
             color: #ff9aa7
         }
 
-        .task button {
-            min-width: 44px;
-            min-height: 44px
+        .hl {
+            color: var(--gold);
+            font-weight: 700
         }
     </style>
 </head>
@@ -317,7 +262,7 @@
             <div class="logo" aria-hidden="true"></div>
             <div>
                 <h1>Solo Leveling — Daily Grind</h1>
-                <div class="sub">Built for Mohamed Shunaan • Born Nov 9, 2004 • Height 163 cm • Weight 53 kg</div>
+                <div class="sub">Non-Negotiables only • Auto-progress weekly</div>
             </div>
             <div class="grow"></div>
             <button id="btnInstall" class="ghost" style="display:none">Install</button>
@@ -325,10 +270,11 @@
 
         <section class="grid cols-2" style="margin-top:12px">
             <div class="panel">
-                <div class="title-row">
+                <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
                     <h2 style="margin:0">Today</h2>
                     <span class="chip" id="todayChip"></span>
                 </div>
+
                 <div class="kpi" style="margin:8px 0 6px">
                     <span class="chip">Lvl <b id="level">1</b></span>
                     <span class="chip">XP <b id="xp">0</b>/<span id="xpNext">100</span></span>
@@ -337,168 +283,41 @@
                     <span class="chip">HP <b id="hp">100</b>/100</span>
                 </div>
                 <progress id="xpBar" max="100" value="0"></progress>
-
-                <!-- NON-NEGOTIABLES -->
-                <div class="panel nn" style="margin-top:12px">
-                    <div class="title-row">
-                        <h3 style="margin:0">Non-Negotiables (must all pass)</h3>
-                        <button id="btnRecalc" class="ghost">Recalculate Targets</button>
-                    </div>
-                    <div id="nnTargets" class="small" style="margin:6px 0 10px"></div>
-                    <div class="list" id="nnList"></div>
-                    <div class="small" style="margin-top:8px">These are <b>fixed</b> and cannot be edited or removed.
-                    </div>
-                </div>
-
-                <div class="list" id="taskList" style="margin-top:12px"></div>
-
-                <div class="row" style="margin-top:12px">
-                    <button id="btnAddTask" class="ghost">+ Add Task</button>
-                    <button id="btnCompleteDay" class="gold grow">Claim Rewards</button>
-                </div>
-                <div class="small" style="margin-top:8px">Tip: “Claim Rewards” when you’ve hit your daily goal. Miss a
-                    day or any Non-Negotiable and punishments apply at midnight.</div>
-            </div>
-
-            <div class="panel">
-                <div class="title-row">
-                    <h2 style="margin:0">Setup & Tools</h2>
-                </div>
-                <div class="grid">
-                    <div class="stat">
-                        <div class="grow">
-                            <div><b>Daily Goal</b></div>
-                            <div class="small">How many task points to clear each day?</div>
-                        </div>
-                        <input type="number" id="goal" min="1" step="1" style="width:90px">
-                    </div>
-                    <div class="stat">
-                        <div class="grow">
-                            <div><b>Reminder</b></div>
-                            <div class="small">One daily notification (local)</div>
-                        </div>
-                        <input type="time" id="reminderTime" style="width:110px">
-                    </div>
-                    <div class="stat">
-                        <div class="grow">
-                            <div><b>Rewards</b></div>
-                            <div class="small">XP per completion / Daily clear</div>
-                        </div>
-                        <input type="number" id="xpPerTask" min="1" step="1" style="width:84px">
-                        <input type="number" id="xpPerClear" min="1" step="1" style="width:100px">
-                    </div>
-                    <div class="stat">
-                        <div class="grow">
-                            <div><b>Punishment HP Loss</b></div>
-                            <div class="small">HP lost when you miss the day</div>
-                        </div>
-                        <input type="number" id="hpLoss" min="0" step="5" style="width:100px">
-                    </div>
-                </div>
-
-                <!-- WEEKLY CHECK-IN -->
-                <div class="panel" style="margin-top:12px">
-                    <div class="title-row">
-                        <h3 style="margin:0">Weekly Check-In</h3>
-                        <label class="small"><input type="checkbox" id="autoBump" checked> Auto-bump on weight ↑</label>
-                    </div>
-                    <div class="grid">
-                        <div class="stat">
-                            <div class="grow">
-                                <div><b>Current Weight</b></div>
-                                <div class="small">kg (compares to last check-in)</div>
-                            </div>
-                            <input type="number" id="ciWeight" min="20" max="200" step="0.1" style="width:110px">
-                        </div>
-                        <div class="stat">
-                            <div class="grow">
-                                <div><b>Waist (optional)</b></div>
-                                <div class="small">cm</div>
-                            </div>
-                            <input type="number" id="ciWaist" min="40" max="140" step="0.5" style="width:110px">
-                        </div>
-                        <div class="stat" style="grid-column:1/-1">
-                            <div class="grow">
-                                <div><b>Note</b></div>
-                                <div class="small">How did the week go?</div>
-                            </div>
-                            <input type="text" id="ciNote" placeholder="Energy good, bench +2.5kg, appetite ok…">
-                        </div>
-                    </div>
-
-                    <div class="row" style="margin-top:8px">
-                        <button id="btnSaveCheckin" class="gold">Save Check-In</button>
-                        <div class="grow"></div>
-                        <select id="ciWeekday" class="ghost" title="Reminder weekday" style="width:150px">
-                            <option value="0">Sunday</option>
-                            <option value="1">Monday</option>
-                            <option value="2">Tuesday</option>
-                            <option value="3">Wednesday</option>
-                            <option value="4">Thursday</option>
-                            <option value="5">Friday</option>
-                            <option value="6">Saturday</option>
-                        </select>
-                        <input type="time" id="ciTime" class="ghost" title="Reminder time" style="width:110px">
-                        <button id="btnEnableWeekly" class="ghost">Enable Weekly Reminder</button>
-                    </div>
-
-                    <div id="ciHistory" class="list" style="margin-top:10px"></div>
-                </div>
-
-                <!-- PROGRESSIVE OVERLOAD -->
-                <div class="panel" style="margin-top:12px">
-                    <div class="title-row">
-                        <h3 style="margin:0">Progressive Overload</h3>
-                        <label class="small"><input type="checkbox" id="poEnabled" checked> Auto-generate next
-                            week</label>
-                    </div>
-                    <div class="grid">
-                        <div class="stat">
-                            <div class="grow">
-                                <div><b>Scheme</b></div>
-                                <div class="small">How to progress?</div>
-                            </div>
-                            <select id="poScheme" style="width:160px">
-                                <option value="load">Load +2.5 kg (main lifts)</option>
-                                <option value="volume">Volume +1 rep (accessories)</option>
-                            </select>
-                        </div>
-                        <div class="stat">
-                            <div class="grow">
-                                <div><b>Main Lift Increment</b></div>
-                                <div class="small">kg</div>
-                            </div>
-                            <input type="number" id="poIncKg" value="2.5" step="0.5" min="0.5" style="width:110px">
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:8px">
-                        <button id="btnGenWeek" class="ghost">Generate Next 7 Days</button>
-                        <button id="btnLoadToday" class="gold">Load Today from Plan</button>
-                    </div>
-                    <div id="planList" class="list" style="margin-top:10px"></div>
-                </div>
-
-                <div class="panel reward" style="margin-top:12px">
+                <div class="panel"
+                    style="margin-top:6px;background:linear-gradient(180deg,#0f2a20,#091715);border-color:#1f4a3a">
                     <b>Unlocked Titles</b>
                     <div id="titles" class="small">Apprentice</div>
                 </div>
-                <div class="panel punish" style="margin-top:12px">
-                    <b>Punishment Queue</b>
-                    <div id="punishQueue" class="small empty">Empty (stay sharp!)</div>
+
+                <div class="panel" style="margin-top:12px;border:1px dashed #31508a">
+                    <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
+                        <h3 style="margin:5">Non-Negotiables (complete all 4)</h3>
+                        <span class="chip">Auto-progress weekly</span>
+                    </div>
+                    <div class="list" id="taskList"></div>
                 </div>
 
                 <div class="row" style="margin-top:12px">
-                    <button id="btnExport" class="ghost">Export Data</button>
-                    <input type="file" id="fileImport" accept="application/json" style="display:none" />
-                    <button id="btnImport" class="ghost">Import</button>
-                    <div class="grow"></div>
-                    <button id="btnReset" class="danger">Hard Reset</button>
+                    <button id="btnCompleteDay" class="gold grow">Claim Rewards</button>
+                </div>
+                <div class="small" style="margin-top:8px">You can claim only after all 4 are checked.</div>
+            </div>
+
+            <div class="panel">
+                <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
+                    <h2 style="margin:0">Status</h2>
+                </div>
+
+                <div class="panel"
+                    style="margin-top:12px;background:linear-gradient(180deg,#2a0f20,#170912);border-color:#4a1f31">
+                    <b>Punishment Queue</b>
+                    <div id="punishQueue" class="small empty">Empty (stay sharp!)</div>
                 </div>
             </div>
         </section>
 
         <section class="panel" style="margin-top:12px">
-            <div class="title-row">
+            <div class="title-row" style="display:flex;justify-content:space-between;align-items:center">
                 <h2 style="margin:0">History</h2>
                 <span class="chip">Completed Days: <b id="daysCleared">0</b></span>
             </div>
@@ -508,568 +327,269 @@
 
     <div class="foot">
         <div class="bar">
-            <div class="small">Solo Leveling PWA · Offline first · Data saved on this device</div>
-            <div class="row"><button id="btnNotify" class="ghost">Enable Notifications</button></div>
-            <button id="btnEnablePush" class="ghost">Enable Push (iOS/Android)</button>
+            <div class="small">PWA · Offline first · Data stays on this device</div>
+            <div class="row">
+                <button id="btnNotify" class="ghost">Enable Notifications</button>
+            </div>
         </div>
     </div>
 
-    <!-- Task Add Dialog -->
-    <dialog id="taskDialog"
-        style="border:1px solid #243059;border-radius:14px;background:#0f1834;color:#e8efff;padding:0;max-width:520px">
-        <form method="dialog" style="padding:14px">
-            <h3 style="margin:0 0 6px">Add Task</h3>
-            <div class="grid">
-                <div><label>Title</label><input type="text" id="taskTitle" placeholder="e.g., Run 2 km" required></div>
-                <div><label>Points (difficulty)</label><input type="number" id="taskPoints" min="1" value="1" required>
-                </div>
-                <div style="grid-column:1/-1"><label>Notes (optional)</label><input type="text" id="taskNotes"
-                        placeholder="Details, reps, duration..."></div>
-            </div>
-            <div class="row" style="margin-top:12px; justify-content:flex-end">
-                <button class="ghost" value="cancel">Cancel</button>
-                <button class="gold" id="taskSave" value="default">Save</button>
-            </div>
-        </form>
-    </dialog>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
-
     <script>
-        (() => {
-            /* ---------- Firebase Messaging (foreground + token) ---------- */
-            // 1) Paste your Firebase web app config (from Firebase console)
-            const firebaseConfig = {
-                apiKey: "AIzaSyA9hxbbdjf6jMAch-PCWVkvAVN3p_Olei8",
-                authDomain: "solo-leveling-78bd9.firebaseapp.com",
-                projectId: "solo-leveling-78bd9",
-                storageBucket: "solo-leveling-78bd9.firebasestorage.app",
-                messagingSenderId: "786125061097",
-                appId: "1:786125061097:web:9d2ebde1106e4bb4bd6978",
-                measurementId: "G-TXRJENRYX9"
-            };
+        /* --------- Make button invisible after notifications have been allowed --------- */
+        function updateNotifyButtonVisibility() {
+            const btn = document.getElementById('btnNotify');
+            if (!btn) return;
 
-            // 2) Your Web Push certificate (VAPID) **public key**
-            const VAPID_KEY = "BJMhrPYwg2NMN5ED9JwrOST3CWdhGYe-E5sUhsZsTCfAsZlb1DuPUsPIy_S8gpYSDs1mnQbOtX67tuhTmSTMLpY";
+            // Hide if notifications aren’t supported
+            if (!('Notification' in window)) { btn.style.display = 'none'; return; }
 
-            // Init Firebase
-            let messaging;
-            try {
-                const fb = firebase.initializeApp(firebaseConfig);
-                messaging = firebase.messaging();
-            } catch (e) {
-                console.warn('Firebase init failed:', e);
-            }
+            // Hide if already granted (or if we previously marked it as enabled)
+            const granted = Notification.permission === 'granted';
+            const enabledFlag = localStorage.getItem('sl_notifications_enabled') === '1';
+            btn.style.display = (granted || enabledFlag) ? 'none' : '';
+        }
 
-            // Get current registration or wait until SW ready
-            async function getServiceWorkerRegistration() {
-                if (navigator.serviceWorker?.ready) return navigator.serviceWorker.ready;
-                return await new Promise(res => {
-                    const check = () => navigator.serviceWorker?.ready.then(res);
-                    setTimeout(check, 500);
-                });
-            }
-
-            // Ask permission and get token (must be in a user gesture on iOS)
-            async function enablePush() {
-                if (!('Notification' in window)) return alert('Notifications are not supported on this device.');
-                if (!messaging) return alert('Messaging not ready. Try reloading after HTTPS hosting.');
-
-                // Must be served over HTTPS and launched from Home Screen on iOS
-                const permission = await Notification.requestPermission();
-                if (permission !== 'granted') {
-                    alert('Permission denied. You can enable it later in iOS Settings > Notifications');
-                    return;
-                }
-
-                const reg = await getServiceWorkerRegistration();
-                try {
-                    const token = await messaging.getToken({
-                        vapidKey: VAPID_KEY,
-                        serviceWorkerRegistration: reg
-                    });
-                    if (!token) {
-                        alert('Could not get push token. Make sure you are on HTTPS and launched from Home Screen (iOS).');
-                        return;
-                    }
-                    // Save & show token so you can send pushes to this device
-                    localStorage.setItem('sl_fcm_token', token);
-                    console.log('FCM token:', token);
-                    toast('Push enabled ✅ Token copied to clipboard.', 'good');
-                    try { await navigator.clipboard.writeText(token); } catch { }
-                    // Optional: send token to your server here (POST /register-token)
-                } catch (err) {
-                    console.error('getToken error', err);
-                    alert('Token error (see console). Check VAPID key & Firebase config.');
-                }
-            }
-
-            // Foreground messages: show a Notification (or custom UI)
-            if (messaging) {
-                messaging.onMessage(payload => {
-                    const title = payload.notification?.title || 'Solo Leveling';
-                    const body = payload.notification?.body || '';
-                    new Notification(title, { body, icon: 'icon.ico' });
-                });
-            }
-
-            // Hook up the button
-            document.addEventListener('DOMContentLoaded', () => {
-                const btnEnablePush = document.getElementById('btnEnablePush');
-                if (btnEnablePush) {
-                    btnEnablePush.addEventListener('click', enablePush);
-                }
+        /* --------- PWA SW registration --------- */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js', { scope: './' })
+                    .catch(err => console.error('SW registration failed', err));
             });
+        }
 
-            /* SW */
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(console.error);
-                });
+        /* ---------------- Core helpers/state ---------------- */
+        const el = id => document.getElementById(id);
+        const todayStr = () => new Date().toLocaleDateString('en-CA');
+        const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } };
+        const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+        const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+        const escapeHtml = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+        let settings = load('sl_settings', { goal: 9, xpPerTask: 10, xpPerClear: 40, hpLoss: 15 });
+        let state = load('sl_state', { xp: 0, coins: 0, level: 1, hp: 100, streak: 0, daysCleared: 0, lastDate: todayStr() });
+        let history = load('sl_history', []);
+        let punishQ = load('sl_punish', []);
+        let titles = load('sl_titles', ['Apprentice']);
+
+        /* Leveling */
+        const xpForLevel = n => 100 * n * n;
+        const levelFromXP = xp => { let n = 1; while (xp >= xpForLevel(n)) n++; return n; };
+        function grantXP(amount) {
+            state.xp += amount;
+            const newLevel = levelFromXP(state.xp);
+            if (newLevel > state.level) {
+                state.level = newLevel; state.coins += 10 * (newLevel - 1);
+                const tiers = ['Apprentice', 'Hunter', 'Shadow Walker', 'Elite Raider', 'S-Rank', 'Monarch'];
+                const t = tiers[Math.min(tiers.length - 1, Math.floor(newLevel / 5))];
+                if (!titles.includes(t)) titles.push(t);
             }
+            save('sl_state', state); save('sl_titles', titles);
+        }
 
-            /* Utils */
-            const $ = s => document.querySelector(s);
-            const el = id => document.getElementById(id);
-            const todayStr = () => new Date().toLocaleDateString('en-CA', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
-            const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } };
-            const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
-            const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
-            const escapeHtml = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-            const roundTo = (n, step) => Math.round(n / step) * step;
+        /* UI mini-helpers */
+        function toast(msg, type = 'info') {
+            const t = document.createElement('div'); t.textContent = msg;
+            t.style.position = 'fixed'; t.style.left = '50%'; t.style.bottom = '90px'; t.style.transform = 'translateX(-50%)';
+            t.style.padding = '12px 14px'; t.style.borderRadius = '12px'; t.style.border = '1px solid #2c3967';
+            t.style.background = type === 'bad' ? '#2b1420' : (type === 'good' ? '#0f2a20' : '#0f1834');
+            t.style.color = '#e8efff'; t.style.boxShadow = '0 10px 30px #08102866'; t.style.zIndex = 1000;
+            document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+        }
+        function refreshKPI() {
+            el('xp').textContent = state.xp;
+            el('xpNext').textContent = xpForLevel(state.level);
+            el('level').textContent = state.level;
+            el('coins').textContent = state.coins;
+            el('streak').textContent = state.streak;
+            el('hp').textContent = state.hp;
+            el('xpBar').max = xpForLevel(state.level);
+            el('xpBar').value = state.xp;
+            el('daysCleared').textContent = state.daysCleared;
+            el('titles').textContent = titles.join(' • ');
+            el('todayChip').textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+            el('punishQueue').innerHTML = punishQ.length ? ('<ul style="margin:6px 0 0 16px">' + punishQ.map(p => `<li>${p}</li>`).join('') + '</ul>') : '<div class="small">Stay Sharp!</div>';
+        }
+        function renderHistory() {
+            const wrap = el('history');
+            wrap.innerHTML = history.slice(0, 30).map(h => {
+                return `<div class="task">
+      <div class="grow">
+        <div class="title">${h.date} — ${h.cleared ? '<span class="hl">CLEARED ✅</span>' : '<span style="color:#ff9aa7">MISSED ❌</span>'}</div>
+        <div class="meta">XP +${h.earnedXP || 0}${h.punishmentsApplied?.length ? (' • Punishment: ' + h.punishmentsApplied.join(', ')) : ''}</div>
+      </div>
+      <span class="chip">Lv ${h.snapshot.level}</span>
+    </div>`;
+            }).join('') || '<div class="small">No history yet.</div>';
+        }
 
-            /* Profile / State / Settings */
-            const profile = load('sl_profile', { name: 'Mohamed Shunaan', dob: '2004-11-09', height_cm: 163, weight_kg: 53 });
-            const state = load('sl_state', { xp: 0, coins: 0, level: 1, hp: 100, streak: 0, titles: ['Apprentice'], lastDate: todayStr(), daysCleared: 0 });
-            const settings = load('sl_settings', { goal: 5, xpPerTask: 10, xpPerClear: 40, hpLoss: 15, reminder: null });
+        /* ---------------- Non-Negotiables only (weekly progression) ---------------- */
+        let startDate = localStorage.getItem('sl_start_date');
+        if (!startDate) { startDate = new Date().toISOString(); localStorage.setItem('sl_start_date', startDate); }
 
-            /* Tasks */
-            function normalizeTasks(arr) {
-                arr = Array.isArray(arr) ? arr : [];
-                return arr.map(t => ({
-                    id: t.id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random())),
-                    title: (t.title ?? 'Untitled').toString(),
-                    points: Number.isFinite(+t.points) ? +t.points : 1,
-                    notes: (t.notes ?? '').toString(),
-                    done: !!t.done
-                }));
-            }
-            let tasks = normalizeTasks(load('sl_tasks', [
-                { id: (crypto.randomUUID ? crypto.randomUUID() : 't1'), title: 'Morning stretch 10 min', points: 1, notes: '', done: false },
-                { id: (crypto.randomUUID ? crypto.randomUUID() : 't2'), title: 'Run / walk 2 km', points: 2, notes: '', done: false },
-                { id: (crypto.randomUUID ? crypto.randomUUID() : 't3'), title: 'Push-ups 3×15', points: 2, notes: '', done: false },
-                { id: (crypto.randomUUID ? crypto.randomUUID() : 't4'), title: 'Study/Build 45 min', points: 2, notes: '', done: false }
-            ]));
+        function weeksSinceStart() {
+            const start = new Date(startDate);
+            const now = new Date();
+            const days = Math.floor((now - start) / 86400000);
+            return Math.floor(days / 7);
+        }
 
-            let history = load('sl_history', []);
-            let punishQ = load('sl_punish', []);
+        function buildNonNegotiables() {
+            const w = weeksSinceStart();
+            const reps = 50 + w * 10;
+            const km = (5 + w * 0.5).toFixed(1).replace(/\.0$/, '');
+            const dateKey = todayStr();
+            return [
+                { id: `pu-${dateKey}`, title: `Push-Up : ${reps}`, points: 2, locked: true },
+                { id: `su-${dateKey}`, title: `Sit-Up : ${reps}`, points: 2, locked: true },
+                { id: `sq-${dateKey}`, title: `Squats : ${reps}`, points: 2, locked: true },
+                { id: `run-${dateKey}`, title: `Run ${km} Km`, points: 3, locked: true }
+            ];
+        }
 
-            /* Non-Negotiables */
-            function calcTargets() {
-                const kg = profile.weight_kg || 53, cm = profile.height_cm || 163;
-                const age = (() => { try { return Math.max(18, Math.floor((Date.now() - new Date(profile.dob).getTime()) / 31557600000)) } catch { return 21 } })();
-                const bmr = Math.round(10 * kg + 6.25 * cm - 5 * age + 5);
-                const tdee = Math.round(bmr * 1.55);
-                return {
-                    protein_g: Math.round(1.8 * kg),
-                    calories_kcal: Math.round(tdee + 300),
-                    steps: 8000, water_l: Math.round((kg * 0.035) * 10) / 10,
-                    sleep_h: 7.5, training_min: 45, mobility_min: 10
-                };
-            }
-            let nnTargets = load('sl_nn_targets', calcTargets());
-            function saveNnTargets() { save('sl_nn_targets', nnTargets); renderNnTargets(); }
-            function emptyNnDay() { return { date: todayStr(), protein_g: 0, calories_kcal: 0, steps: 0, water_l: 0, sleep_h: 0, training: false, mobility: false }; }
-            let nnDay = load('sl_nn_day', emptyNnDay());
-            function ensureNnToday() { if (nnDay.date !== todayStr()) { nnDay = emptyNnDay(); save('sl_nn_day', nnDay); } }
-            ensureNnToday();
+        /* Done map per day */
+        function getAllDoneMap() { return load('sl_nn_done', {}); }
+        function setAllDoneMap(m) { save('sl_nn_done', m); }
+        function getTodayDoneMap() { const all = getAllDoneMap(); return all[todayStr()] || {}; }
+        function setTodayDone(id, val) {
+            const all = getAllDoneMap(); const day = todayStr();
+            all[day] = all[day] || {};
+            all[day][id] = !!val;
+            setAllDoneMap(all);
+        }
 
-            /* Weekly check-ins */
-            let checkins = load('sl_checkins', []);
-            const ciSettings = load('sl_ci_settings', { weekday: 0, time: "20:00", autoBump: true, threshold: 0.3 });
+        /* Claim only if all 4 are done */
+        function nnAllDoneToday() {
+            const ids = buildNonNegotiables().map(t => t.id);
+            const done = getTodayDoneMap();
+            return ids.every(id => !!done[id]);
+        }
 
-            /* Progressive Overload */
-            const poSettings = load('sl_po_settings', {
-                enabled: true, scheme: 'load', incKg: 2.5,
-                mainLifts: { // gentle defaults from bodyweight
-                    squat: Math.max(20, roundTo(profile.weight_kg * 1.0, 2.5)),
-                    bench: Math.max(15, roundTo(profile.weight_kg * 0.75, 2.5)),
-                    deadlift: Math.max(30, roundTo(profile.weight_kg * 1.25, 2.5)),
-                    ohp: Math.max(10, roundTo(profile.weight_kg * 0.5, 2.5)),
-                    pullups: 6 // reps target
-                }
-            });
-            let upcomingPlan = load('sl_po_plan', []); // [{date:'YYYY-MM-DD', items:[{title, notes, points}]}]
+        function renderTasks() {
+            const wrap = el('taskList'); if (!wrap) return;
+            const tasks = buildNonNegotiables();
+            const done = getTodayDoneMap();
+            wrap.innerHTML = tasks.map(t => `
+    <div class="task" data-id="${t.id}">
+      <input type="checkbox" class="task-done" ${done[t.id] ? 'checked' : ''} aria-label="done">
+      <div class="grow">
+        <div class="title">${escapeHtml(t.title)} <span class="chip">${t.points} pt</span></div>
+        <div class="meta">Non-negotiable • Auto-progresses weekly</div>
+      </div>
+    </div>
+  `).join('');
+            // Optional: set daily goal to total points
+            const totalPts = tasks.reduce((a, b) => a + b.points, 0);
+            if (settings.goal !== totalPts) { settings.goal = totalPts; save('sl_settings', settings); }
+        }
 
-            /* Leveling */
-            const xpForLevel = n => 100 * n * n;
-            const levelFromXP = xp => { let n = 1; while (xp >= xpForLevel(n)) n++; return n; };
-            function grantXP(amount) {
-                state.xp += amount; const newLevel = levelFromXP(state.xp);
-                if (newLevel > state.level) {
-                    state.level = newLevel; state.coins += 10 * (newLevel - 1);
-                    const tiers = ['Apprentice', 'Hunter', 'Shadow Walker', 'Elite Raider', 'S-Rank', 'Monarch'];
-                    const t = tiers[Math.min(tiers.length - 1, Math.floor(newLevel / 5))];
-                    if (!state.titles.includes(t)) state.titles.push(t);
-                    toast(`LEVEL UP! You reached Lv ${newLevel} 🗡️`, 'good');
-                }
-            }
-
-            /* UI */
-            function refreshKPI() {
-                el('xp').textContent = state.xp; el('level').textContent = state.level; el('coins').textContent = state.coins; el('streak').textContent = state.streak; el('hp').textContent = state.hp;
-                const next = xpForLevel(state.level); el('xpNext').textContent = next; el('xpBar').max = next; el('xpBar').value = state.xp;
-                el('daysCleared').textContent = state.daysCleared;
-                el('titles').textContent = state.titles.join(' • ');
-                el('punishQueue').innerHTML = punishQ.length ? ('<ul style="margin:6px 0 0 16px">' + punishQ.map(p => `<li>${p}</li>`).join('') + '</ul>') : '<div class="small empty">Empty (stay sharp!)</div>';
-                el('todayChip').textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
-                el('goal').value = settings.goal; el('xpPerTask').value = settings.xpPerTask; el('xpPerClear').value = settings.xpPerClear; el('hpLoss').value = settings.hpLoss; el('reminderTime').value = settings.reminder ?? '';
-                el('ciWeekday').value = String(ciSettings.weekday); el('ciTime').value = ciSettings.time; el('autoBump').checked = !!ciSettings.autoBump;
-                el('poEnabled').checked = !!poSettings.enabled; el('poScheme').value = poSettings.scheme; el('poIncKg').value = poSettings.incKg;
-            }
-
-            function renderTasks() {
-                if (!Array.isArray(tasks)) tasks = [];
-                const wrap = el('taskList'); if (!wrap) return;
-                if (tasks.length === 0) { wrap.innerHTML = '<div class="empty">No tasks yet. Add some!</div>'; return; }
-                wrap.innerHTML = tasks.map(t => `
-      <div class="task" data-id="${t.id}">
-        <input type="checkbox" class="task-done" ${t.done ? 'checked' : ''} aria-label="done">
-        <div class="grow">
-          <div class="title">${escapeHtml(t.title)} <span class="chip">${Number(t.points || 1)} pt</span></div>
-          <div class="meta">${escapeHtml(t.notes || '')}</div>
-        </div>
-        <button class="ghost task-edit" type="button" aria-label="edit">✏️</button>
-        <button class="ghost task-del" type="button" aria-label="delete">🗑️</button>
-      </div>`).join('');
-                const pts = tasks.filter(t => t.done).reduce((a, b) => a + (Number(b.points) || 1), 0);
-                const pct = Math.min(100, Math.round(100 * pts / Math.max(1, settings.goal)));
-                el('xpBar').title = `Daily progress: ${pts}/${settings.goal} points (${pct}%)`;
-            }
-
-            function editTask(t) {
-                const dlg = el('taskDialog');
-                el('taskTitle').value = t?.title || ''; el('taskPoints').value = t?.points || 1; el('taskNotes').value = t?.notes || '';
-                dlg.showModal();
-                el('taskSave').onclick = (e) => {
-                    e.preventDefault();
-                    const title = el('taskTitle').value.trim();
-                    const points = Math.max(1, parseInt(el('taskPoints').value || '1')); const notes = el('taskNotes').value.trim();
-                    if (!title) { dlg.close(); return; }
-                    if (t) { t.title = title; t.points = points; t.notes = notes; } else { tasks.push({ id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random())), title, points, notes, done: false }); }
-                    tasks = normalizeTasks(tasks); save('sl_tasks', tasks); renderTasks(); dlg.close();
-                }
-            }
-
-            function renderNnTargets() {
-                const t = nnTargets;
-                el('nnTargets').innerHTML =
-                    `Protein ≥ <b>${t.protein_g}g</b> • Calories ≈ <b>${t.calories_kcal}kcal</b> • Training ≥ <b>${t.training_min}min</b> • Steps ≥ <b>${t.steps}</b> • Water ≥ <b>${t.water_l}L</b> • Sleep ≥ <b>${t.sleep_h}h</b> • Mobility ≥ <b>${t.mobility_min}min</b>`;
-            }
-            function nnPassFail() {
-                const t = nnTargets, d = nnDay;
-                return { protein: d.protein_g >= t.protein_g, calories: d.calories_kcal >= t.calories_kcal, training: !!d.training, steps: d.steps >= t.steps, water: d.water_l >= t.water_l, sleep: d.sleep_h >= t.sleep_h, mobility: !!d.mobility };
-            }
-            function renderNnList() {
-                const wrap = el('nnList'); const t = nnTargets; const d = nnDay; const pf = nnPassFail();
-                function row(label, controlHtml, ok) { return `<div class="task"><div class="chip ${ok ? 'ok' : 'bad'}">${ok ? 'PASS' : 'NEED'}</div><div class="grow"><div class="title">${label}</div><div class="meta">${ok ? 'Looks good' : 'Incomplete'}</div></div>${controlHtml}</div>` }
-                wrap.innerHTML =
-                    row(`Protein (≥ ${t.protein_g}g)`, `<input type="number" id="nn_protein" min="0" value="${d.protein_g}" style="width:110px">`, pf.protein) +
-                    row(`Calories (≥ ${t.calories_kcal} kcal)`, `<input type="number" id="nn_cal" min="0" value="${d.calories_kcal}" style="width:120px">`, pf.calories) +
-                    row(`Training (≥ ${t.training_min} min)`, `<input type="checkbox" id="nn_train" ${d.training ? 'checked' : ''}>`, pf.training) +
-                    row(`Steps (≥ ${t.steps})`, `<input type="number" id="nn_steps" min="0" value="${d.steps}" style="width:110px">`, pf.steps) +
-                    row(`Hydration (≥ ${t.water_l} L)`, `<input type="number" id="nn_water" min="0" step="0.1" value="${d.water_l}" style="width:90px">`, pf.water) +
-                    row(`Sleep (≥ ${t.sleep_h} h)`, `<input type="number" id="nn_sleep" min="0" step="0.1" value="${d.sleep_h}" style="width:90px">`, pf.sleep) +
-                    row(`Mobility (≥ ${t.mobility_min} min)`, `<input type="checkbox" id="nn_mob" ${d.mobility ? 'checked' : ''}>`, pf.mobility);
-
-                // listeners
-                el('nn_protein').addEventListener('change', e => { nnDay.protein_g = Math.max(0, parseInt(e.target.value || '0')); save('sl_nn_day', nnDay); renderNnList(); });
-                el('nn_cal').addEventListener('change', e => { nnDay.calories_kcal = Math.max(0, parseInt(e.target.value || '0')); save('sl_nn_day', nnDay); renderNnList(); });
-                el('nn_steps').addEventListener('change', e => { nnDay.steps = Math.max(0, parseInt(e.target.value || '0')); save('sl_nn_day', nnDay); renderNnList(); });
-                el('nn_water').addEventListener('change', e => { nnDay.water_l = Math.max(0, parseFloat(e.target.value || '0')); save('sl_nn_day', nnDay); renderNnList(); });
-                el('nn_sleep').addEventListener('change', e => { nnDay.sleep_h = Math.max(0, parseFloat(e.target.value || '0')); save('sl_nn_day', nnDay); renderNnList(); });
-                el('nn_train').addEventListener('change', e => { nnDay.training = !!e.target.checked; save('sl_nn_day', nnDay); renderNnList(); });
-                el('nn_mob').addEventListener('change', e => { nnDay.mobility = !!e.target.checked; save('sl_nn_day', nnDay); renderNnList(); });
-            }
-
-            /* Punishments & day end */
-            const punishmentDeck = ['20 push-ups now', '40 squats now', 'Cold shower 60s', 'No sugar today', '10 min meditation', 'Clean your room 10 min', 'Stretch 8 min', '2 km walk'];
-            const drawPunishment = () => punishmentDeck[Math.floor(Math.random() * punishmentDeck.length)];
-
-            function endOfDayEvaluate(forceMiss = false) {
-                ensureNnToday();
-                const pts = tasks.filter(t => t.done).reduce((a, b) => a + b.points, 0);
-                const nn = nnPassFail(); const allNN = Object.values(nn).every(Boolean);
-                const clearedBase = !forceMiss && (pts >= settings.goal);
-                const cleared = clearedBase && allNN;
-
-                let earned = 0, pItems = [];
-                if (cleared) {
-                    grantXP(settings.xpPerClear); state.coins += 5; state.streak++; state.daysCleared++; earned = settings.xpPerClear;
-                } else {
-                    const nnFailCount = allNN ? 0 : Object.values(nn).filter(v => !v).length;
-                    const hpDrop = nnFailCount > 0 ? settings.hpLoss * 2 : settings.hpLoss;
-                    state.streak = 0; state.hp = clamp(state.hp - hpDrop, 0, 100);
-                    const draws = nnFailCount > 0 ? 2 : 1; for (let i = 0; i < draws; i++) pItems.push(drawPunishment());
-                    punishQ.push(`${new Date().toLocaleDateString()}: ${pItems.join(' + ')}`);
-                    toast(`Day failed. HP -${hpDrop}. Punishment${draws > 1 ? 's' : ''}: ${pItems.join(' + ')}`, 'bad');
-                }
-
-                history.unshift({ date: state.lastDate, cleared, earnedXP: earned, punishmentsApplied: pItems.length ? pItems : [], snapshot: { xp: state.xp, level: state.level, coins: state.coins, streak: state.streak, hp: state.hp }, nn });
-                tasks.forEach(t => t.done = false);
-                nnDay = emptyNnDay();
-                state.lastDate = todayStr();
-                saveAll(); refreshKPI(); renderTasks(); renderHistory(); renderNnList();
-            }
-
-            function renderHistory() {
-                const wrap = el('history');
-                wrap.innerHTML = history.slice(0, 30).map(h => {
-                    const nnBadge = h.nn && Object.values(h.nn).every(Boolean) ? '<span class="chip">NN PASS</span>' : '<span class="chip" style="background:#2a1a2a;border-color:#4a1f31">NN FAIL</span>';
-                    return `<div class="task"><div class="grow"><div class="title">${h.date} — ${h.cleared ? '<span class="hl">CLEARED ✅</span>' : '<span style="color:#ff9aa7">MISSED ❌</span>'} ${nnBadge}</div><div class="meta">XP +${h.earnedXP} ${h.punishmentsApplied?.length ? ('• Punishment: ' + h.punishmentsApplied.join(', ')) : ''}</div></div><div class="chip">Lv ${h.snapshot.level}</div></div>`
-                }).join('') || '<div class="empty">No history yet.</div>';
-            }
-
-            /* Training compliance last 7 */
-            function trainingComplianceCount() {
-                const last7 = history.slice(0, 7);
-                return last7.reduce((acc, h) => acc + (h.nn && h.nn.training ? 1 : 0), 0);
-            }
-
-            /* Plan generation */
-            function yyyymmdd(d) { return d.toLocaleDateString('en-CA'); }
-            function addDays(d, dx) { const n = new Date(d); n.setDate(n.getDate() + dx); return n; }
-
-            function generateNext7DaysPlan(startDate = null) {
-                const incKg = Math.max(0.5, parseFloat(el('poIncKg').value || poSettings.incKg));
-                const scheme = el('poScheme').value || poSettings.scheme;
-                // copy base lifts
-                const L = JSON.parse(JSON.stringify(poSettings.mainLifts));
-                if (scheme === 'load') { L.squat = roundTo(L.squat + incKg, 0.5); L.bench = roundTo(L.bench + incKg, 0.5); L.deadlift = roundTo(L.deadlift + incKg, 0.5); L.ohp = roundTo(L.ohp + Math.max(1, incKg / 2), 0.5); }
-                else { L.pullups += 1; } // volume: keep weights, bump pullups target
-
-                const start = startDate ? new Date(startDate) : addDays(new Date(), 1); // default: start tomorrow
-                const plan = [];
-                // Template (7 days)
-                const d0 = yyyymmdd(start);
-                for (let i = 0; i < 7; i++) {
-                    const date = yyyymmdd(addDays(start, i));
-                    let items = [];
-                    if (i === 0) { // Day 1 — Full A
-                        items = [
-                            { title: `Squat 3×5 @ ${L.squat} kg`, points: 2, notes: 'Main lift' },
-                            { title: `Bench 3×5 @ ${L.bench} kg`, points: 2, notes: 'Main lift' },
-                            { title: `Pull-ups ${L.pullups}×3`, points: 1, notes: 'Accessories' }
-                        ];
-                    } else if (i === 2) { // Day 3 — Full B
-                        items = [
-                            { title: `Deadlift 1×5 @ ${L.deadlift} kg`, points: 2, notes: 'Main lift' },
-                            { title: `OHP 3×5 @ ${L.ohp} kg`, points: 2, notes: 'Main lift' },
-                            { title: `DB Row 3×10`, points: 1, notes: 'Accessories' }
-                        ];
-                    } else if (i === 4) { // Day 5 — Squat light + Bench repeat
-                        items = [
-                            { title: `Squat (light) 3×3 @ ${roundTo(L.squat * 0.9, 0.5)} kg`, points: 2, notes: 'Main lift light' },
-                            { title: `Bench 3×5 @ ${L.bench} kg`, points: 2, notes: 'Main lift' },
-                            { title: `Face Pull 3×15`, points: 1, notes: 'Accessories' }
-                        ];
-                    } else if (i === 5) { // Day 6 — Accessories/Conditioning
-                        items = [
-                            { title: `Lunges 3×12/leg`, points: 1, notes: 'Accessories' },
-                            { title: `Plank 3×60s`, points: 1, notes: 'Core' },
-                            { title: `Zone2 20–30 min`, points: 2, notes: 'Conditioning' }
-                        ];
-                    } else { // Rest / Active
-                        items = [
-                            { title: `Active Recovery — walk 6km or 8k+ steps`, points: 1, notes: 'Move & mobility 10 min' }
-                        ];
-                    }
-                    plan.push({ date, items });
-                }
-                upcomingPlan = plan;
-                // persist new base (so next generation stacks)
-                poSettings.mainLifts = L;
-                save('sl_po_settings', poSettings);
-                save('sl_po_plan', upcomingPlan);
-                renderPlan(); toast('Next 7 days generated ✅', 'good');
-            }
-
-            function renderPlan() {
-                const wrap = el('planList');
-                if (!upcomingPlan.length) { wrap.innerHTML = '<div class="small empty">No upcoming plan. Generate one!</div>'; return; }
-                wrap.innerHTML = upcomingPlan.map(day => {
-                    const nice = new Date(day.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-                    return `<div class="task">
-        <div class="grow">
-          <div class="title">${nice}</div>
-          <div class="meta">${day.items.map(i => escapeHtml(i.title)).join(' • ')}</div>
-        </div>
-        <span class="chip">${day.items.length} items</span>
-      </div>`;
-                }).join('');
-            }
-
-            function loadTodayFromPlan() {
-                const today = todayStr();
-                const day = upcomingPlan.find(d => d.date === today);
-                if (!day) { toast('No plan scheduled for today.', 'bad'); return; }
-                const newOnes = day.items.map(i => ({ id: (crypto.randomUUID ? crypto.randomUUID() : String(Math.random())), title: i.title, notes: i.notes || '', points: i.points || 1, done: false }));
-                tasks = normalizeTasks(tasks.concat(newOnes));
-                save('sl_tasks', tasks);
-                renderTasks();
-                toast('Loaded today’s plan into tasks ✅', 'good');
-            }
-
-            /* Weekly auto-trigger after check-in if ≥4 training passes */
-            function maybeAutoGeneratePlan() {
-                if (!poSettings.enabled) return;
-                if (trainingComplianceCount() >= 4) {
-                    generateNext7DaysPlan(); // starts tomorrow
-                    toast('Great consistency! New week generated. ⚔️', 'good');
-                } else {
-                    toast('Train ≥4 days next week to auto-generate overload.', 'info');
-                }
-            }
-
-            /* Weekly check-ins UI/logic */
-            function renderCheckinHistory() {
-                const wrap = el('ciHistory');
-                if (!checkins.length) { wrap.innerHTML = '<div class="small empty">No check-ins yet. Do one every week to keep targets aligned.</div>'; return; }
-                wrap.innerHTML = checkins.slice(-8).reverse().map(c => {
-                    const d = new Date(c.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-                    const delta = (c.delta_kg > 0 ? '+' : '') + c.delta_kg.toFixed(1) + ' kg';
-                    const badge = c.bumped ? `<span class="chip">Targets bumped</span>` : '';
-                    return `<div class="task"><div class="grow"><div class="title">${d} — ${c.weight_kg.toFixed(1)} kg <span class="${c.delta_kg >= 0 ? 'ok' : 'bad'}">(${delta})</span> ${badge}</div><div class="meta">${c.note ? escapeHtml(c.note) : ''}${c.waist_cm ? (' • Waist: ' + c.waist_cm + ' cm') : ''}</div></div></div>`;
-                }).join('');
-            }
-            function bumpTargetsFromWeight(newKg) {
-                const prev = { ...nnTargets }; profile.weight_kg = newKg; nnTargets = calcTargets(); save('sl_profile', profile); saveNnTargets();
-                const diffP = nnTargets.protein_g - prev.protein_g; const diffC = nnTargets.calories_kcal - prev.calories_kcal;
-                toast(`Targets bumped: Protein ${diffP >= 0 ? '+' : ''}${diffP}g • Calories ${diffC >= 0 ? '+' : ''}${diffC} kcal`, 'good');
-            }
-            function saveCheckin() {
-                const w = parseFloat(el('ciWeight').value); const waist = parseFloat(el('ciWaist').value) || null; const note = (el('ciNote').value || '').trim();
-                if (!w || w < 20 || w > 200) { alert('Enter a valid weight in kg.'); return; }
-                const last = checkins[checkins.length - 1]; const delta = last ? (w - last.weight_kg) : 0;
-                let bumped = false; if (ciSettings.autoBump && delta >= (ciSettings.threshold || 0.3)) { bumpTargetsFromWeight(w); bumped = true; }
-                checkins.push({ date: new Date().toISOString(), weight_kg: w, waist_cm: waist, note, delta_kg: delta, bumped });
-                save('sl_checkins', checkins);
-                el('ciNote').value = ''; el('ciWaist').value = ''; el('ciWeight').value = '';
-                renderCheckinHistory();
-                toast(`Check-in saved${bumped ? ' & targets updated' : ''} ✅`, 'good');
-                // trigger plan generation if compliance good
-                maybeAutoGeneratePlan();
-            }
-
-            /* Reminders */
-            function scheduleReminder() {
-                if (!settings.reminder) return; if (!('Notification' in window)) return; if (Notification.permission !== 'granted') return;
-                const now = new Date(); const [h, m] = (settings.reminder || '20:00').split(':').map(Number);
-                const next = new Date(); next.setHours(h, m, 0, 0); if (next <= now) next.setDate(next.getDate() + 1);
-                setTimeout(() => { new Notification('Solo Leveling — Daily', { body: 'Non-Negotiables time. Clear the day! 🔥' }); scheduleReminder(); }, next - now);
-            }
-            function nextWeeklyDate(weekday, timeStr) {
-                const [hh, mm] = (timeStr || '20:00').split(':').map(n => parseInt(n, 10));
-                const now = new Date(); const next = new Date(); next.setHours(hh, mm, 0, 0);
-                let add = (weekday - next.getDay()); if (add < 0) add += 7; if (add === 0 && next <= now) add = 7; next.setDate(next.getDate() + add); return next;
-            }
-            function scheduleWeeklyReminder() {
-                if (!('Notification' in window)) return; if (Notification.permission !== 'granted') return;
-                const when = nextWeeklyDate(ciSettings.weekday, ciSettings.time || '20:00'); const ms = when - new Date();
-                setTimeout(() => { new Notification('Weekly Check-In', { body: 'Log weight and auto-bump targets if needed.' }); scheduleWeeklyReminder(); }, ms);
-            }
-
-            /* Save + toast */
-            function saveAll() {
-                save('sl_profile', profile); save('sl_state', state); save('sl_settings', settings); save('sl_tasks', tasks);
-                save('sl_history', history); save('sl_punish', punishQ); save('sl_nn_day', nnDay); save('sl_nn_targets', nnTargets);
-                save('sl_checkins', checkins); save('sl_ci_settings', ciSettings);
-                save('sl_po_settings', poSettings); save('sl_po_plan', upcomingPlan);
-            }
-            let toastTimer; function toast(msg, type = 'info') {
-                const t = document.createElement('div'); t.textContent = msg; t.style.position = 'fixed'; t.style.left = '50%'; t.style.bottom = '90px'; t.style.transform = 'translateX(-50%)'; t.style.padding = '12px 14px'; t.style.borderRadius = '12px'; t.style.border = '1px solid #2c3967'; t.style.background = type === 'bad' ? '#2b1420' : (type === 'good' ? '#0f2a20' : '#0f1834'); t.style.color = '#e8efff'; t.style.boxShadow = '0 10px 30px #08102866'; t.style.zIndex = 1000; document.body.appendChild(t); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 2600);
-            }
-
-            /* Delegation for tasks */
-            const taskListEl = el('taskList');
-            taskListEl.addEventListener('change', (e) => {
+        function wireTaskEvents() {
+            const list = el('taskList'); if (!list) return;
+            list.addEventListener('change', (e) => {
                 if (!e.target.matches('.task-done')) return;
                 const row = e.target.closest('.task'); if (!row) return;
-                const id = row.dataset.id; const t = tasks.find(x => x.id === id); if (!t) return;
-                t.done = e.target.checked; if (t.done) { grantXP(settings.xpPerTask); state.coins += 1; saveAll(); refreshKPI(); }
-                save('sl_tasks', tasks);
+                const id = row.dataset.id;
+                setTodayDone(id, e.target.checked);
+                if (e.target.checked) {
+                    state.coins += 1; save('sl_state', state);
+                    grantXP(settings.xpPerTask);
+                    refreshKPI();
+                }
             });
-            taskListEl.addEventListener('click', (e) => {
-                const row = e.target.closest('.task'); if (!row) return;
-                const id = row.dataset.id; const t = tasks.find(x => x.id === id); if (!t) return;
-                if (e.target.matches('.task-edit')) { editTask(t); }
-                else if (e.target.matches('.task-del')) { if (confirm('Delete this task?')) { tasks = tasks.filter(x => x.id !== id); save('sl_tasks', tasks); renderTasks(); } }
-            });
+        }
 
-            /* Other events */
-            el('btnAddTask').addEventListener('click', () => editTask(null));
-            el('btnCompleteDay').addEventListener('click', () => {
-                const pf = nnPassFail(); const allNN = Object.values(pf).every(Boolean);
-                const pts = tasks.filter(t => t.done).reduce((a, b) => a + b.points, 0);
-                if (!allNN) { if (!confirm('Non-Negotiables failing. Claim anyway? (MISSED with extra punishment)')) return; }
-                if (pts < settings.goal) { if (!confirm('Below daily goal. Claim anyway? (MISSED)')) return; }
-                endOfDayEvaluate(pts < settings.goal || !allNN);
-                toast('Day recorded. Onward!', 'good');
-            });
-            el('btnReset').addEventListener('click', () => {
-                if (!confirm('Hard reset ALL data? This cannot be undone.')) return;
-                ['sl_profile', 'sl_state', 'sl_settings', 'sl_tasks', 'sl_history', 'sl_punish', 'sl_nn_day', 'sl_nn_targets', 'sl_checkins', 'sl_ci_settings', 'sl_po_settings', 'sl_po_plan'].forEach(k => localStorage.removeItem(k)); location.reload();
-            });
-            el('goal').addEventListener('change', e => { settings.goal = Math.max(1, parseInt(e.target.value || '1')); save('sl_settings', settings); });
-            el('xpPerTask').addEventListener('change', e => { settings.xpPerTask = Math.max(1, parseInt(e.target.value || '1')); save('sl_settings', settings); });
-            el('xpPerClear').addEventListener('change', e => { settings.xpPerClear = Math.max(1, parseInt(e.target.value || '1')); save('sl_settings', settings); });
-            el('hpLoss').addEventListener('change', e => { settings.hpLoss = Math.max(0, parseInt(e.target.value || '0')); save('sl_settings', settings); });
-            el('reminderTime').addEventListener('change', e => { settings.reminder = e.target.value || null; save('sl_settings', settings); scheduleReminder(); });
-            el('btnNotify').addEventListener('click', async () => {
-                if (!('Notification' in window)) return alert('Notifications not supported on this device/browser.');
-                const perm = await Notification.requestPermission(); if (perm === 'granted') { toast('Notifications enabled ✅', 'good'); scheduleReminder(); scheduleWeeklyReminder(); } else { toast('Notifications blocked', 'bad'); }
-            });
-            el('btnRecalc').addEventListener('click', () => { nnTargets = calcTargets(); saveNnTargets(); renderNnList(); toast('Targets recalculated ✅', 'good'); });
+        /* Strict day evaluation */
+        function endOfDayEvaluateStrict() {
+            const cleared = nnAllDoneToday();
+            let earnedXP = 0, pItems = [];
 
-            el('btnSaveCheckin').addEventListener('click', saveCheckin);
-            el('autoBump').addEventListener('change', e => { ciSettings.autoBump = !!e.target.checked; save('sl_ci_settings', ciSettings); });
-            el('ciWeekday').addEventListener('change', e => { ciSettings.weekday = parseInt(e.target.value, 10); save('sl_ci_settings', ciSettings); });
-            el('ciTime').addEventListener('change', e => { ciSettings.time = e.target.value || '20:00'; save('sl_ci_settings', ciSettings); });
-            el('btnEnableWeekly').addEventListener('click', async () => {
-                if (!('Notification' in window)) return alert('Notifications not supported on this device/browser.');
-                const perm = await Notification.requestPermission();
-                if (perm === 'granted') { toast('Weekly reminder enabled ✅', 'good'); scheduleWeeklyReminder(); }
-                else { toast('Notifications blocked', 'bad'); }
-            });
+            if (cleared) {
+                grantXP(settings.xpPerClear);
+                state.coins += 5; state.streak++; state.daysCleared++; earnedXP = settings.xpPerClear;
+                toast('Day cleared! All non-negotiables done ✅', 'good');
+            } else {
+                const hpDrop = settings.hpLoss;
+                state.streak = 0; state.hp = clamp(state.hp - hpDrop, 0, 100);
+                const deck = ['20 push-ups now', '40 squats now', 'Cold shower 60s', 'No sugar today', '10 min meditation', 'Clean your room 10 min', 'Stretch 8 min', '2 km walk'];
+                const draw = () => deck[Math.floor(Math.random() * deck.length)];
+                pItems.push(draw());
+                punishQ.push(`${new Date().toLocaleDateString()}: ${pItems.join(' + ')}`);
+                toast(`Day failed. HP -${hpDrop}. Punishment: ${pItems.join(' + ')}`, 'bad');
+            }
 
-            // PO controls
-            el('poEnabled').addEventListener('change', e => { poSettings.enabled = !!e.target.checked; save('sl_po_settings', poSettings); });
-            el('poScheme').addEventListener('change', e => { poSettings.scheme = e.target.value; save('sl_po_settings', poSettings); });
-            el('poIncKg').addEventListener('change', e => { poSettings.incKg = Math.max(0.5, parseFloat(e.target.value || poSettings.incKg)); save('sl_po_settings', poSettings); });
-            el('btnGenWeek').addEventListener('click', () => generateNext7DaysPlan());
-            el('btnLoadToday').addEventListener('click', loadTodayFromPlan);
+            const snapshot = { xp: state.xp, level: state.level, coins: state.coins, streak: state.streak, hp: state.hp };
+            history.unshift({ date: state.lastDate, cleared, earnedXP, punishmentsApplied: pItems, snapshot });
+            save('sl_history', history);
 
-            /* Rollover */
-            function checkRollover() { const today = todayStr(); if (state.lastDate !== today) { endOfDayEvaluate(); } }
+            // clear today's done map so tomorrow is fresh
+            const all = getAllDoneMap(); delete all[todayStr()]; setAllDoneMap(all);
 
-            /* Install button */
+            state.lastDate = todayStr(); save('sl_state', state);
+            refreshKPI(); renderHistory(); renderTasks();
+        }
+
+        /* Midnight rollover uses strict rule */
+        function checkRollover() {
+            const today = todayStr();
+            if (state.lastDate !== today) {
+                endOfDayEvaluateStrict();
+            }
+        }
+
+        /* Notifications (browser permission; push infra optional) */
+        function scheduleReminder() {
+            if (!('Notification' in window)) return;
+            if (Notification.permission !== 'granted') return;
+            const now = new Date(); const [h, m] = ('20:00').split(':').map(Number);
+            const next = new Date(); next.setHours(h, m, 0, 0); if (next <= now) next.setDate(next.getDate() + 1);
+            setTimeout(() => { new Notification('Solo Leveling — Daily', { body: 'Finish all four Non-Negotiables 🔥' }); scheduleReminder(); }, next - now);
+        }
+
+        /* Events */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Install button (A2HS)
             let deferredPrompt; const btnInstall = el('btnInstall');
             window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; btnInstall.style.display = 'inline-block'; });
             btnInstall?.addEventListener('click', async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; btnInstall.style.display = 'none'; });
 
-            /* Boot */
+            document.getElementById('btnNotify').addEventListener('click', async () => {
+                if (!('Notification' in window)) {
+                    alert('Notifications not supported on this device/browser.');
+                    return;
+                }
+                const perm = await Notification.requestPermission();
+                if (perm === 'granted') {
+                    // mark enabled and hide the button
+                    localStorage.setItem('sl_notifications_enabled', '1');
+                    toast('Notifications enabled ✅', 'good');
+                    updateNotifyButtonVisibility();
+                    // (optional) start your local reminder scheduler
+                    scheduleReminder?.();
+                } else {
+                    toast('Notifications blocked', 'bad');
+                }
+            });
+
+
+            el('btnCompleteDay').addEventListener('click', () => {
+                if (!nnAllDoneToday()) {
+                    alert('You must complete ALL four non-negotiables before claiming.');
+                    return;
+                }
+                endOfDayEvaluateStrict();
+            });
+
+            // boot
             checkRollover();
             refreshKPI();
             renderTasks();
+            wireTaskEvents();
             renderHistory();
-            renderNnTargets();
-            renderNnList();
-            renderCheckinHistory();
-            renderPlan();
-            scheduleReminder();
-            if (('Notification' in window) && Notification.permission === 'granted') { scheduleWeeklyReminder(); }
-        })();
+        });
+
+        // after you successfully get the FCM token:
+        localStorage.setItem('sl_notifications_enabled', '1');
+        document.getElementById('btnEnablePush')?.style.setProperty('display', 'none');
+        updateNotifyButtonVisibility();
     </script>
 </body>
 

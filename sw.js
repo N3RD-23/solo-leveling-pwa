@@ -1,11 +1,21 @@
-// sw.js
-const CACHE = 'sl-cache-v3';
-const CORE = ['.', './index.html', './manifest.json', './icon.ico'];
+/* sw.js — v4 */
+const VERSION = 'v4';
+const CACHE = `sl-cache-${VERSION}`;
+const CORE = [
+  './',
+  './index.html',
+  './manifest.json',
+  './icon.ico'
+];
 
+/* Install: precache core and activate immediately */
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
+  event.waitUntil(
+    caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())
+  );
 });
 
+/* Activate: clean old caches and take control */
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
@@ -14,24 +24,46 @@ self.addEventListener('activate', event => {
   })());
 });
 
-// Cache-first for same-origin GET
+/* Fetch: cache-first for same-origin GET, SPA fallback for navigations */
 self.addEventListener('fetch', event => {
-  const url = new URL(event.request.url);
-  if (event.request.method === 'GET' && url.origin === location.origin) {
+  const req = event.request;
+  const url = new URL(req.url);
+
+  // Only handle same-origin GET
+  if (req.method !== 'GET' || url.origin !== location.origin) return;
+
+  // SPA navigation fallback
+  const isNav = req.mode === 'navigate' ||
+    (req.headers.get('accept') || '').includes('text/html');
+
+  if (isNav) {
     event.respondWith(
-      caches.match(event.request).then(res =>
-        res ||
-        fetch(event.request).then(resp => {
-          const copy = resp.clone();
-          caches.open(CACHE).then(c => c.put(event.request, copy));
-          return resp;
-        }).catch(() => caches.match('./index.html'))
-      )
+      fetch(req).catch(() => caches.match('./index.html'))
     );
+    return;
   }
+
+  // Static assets: cache-first
+  event.respondWith(
+    caches.match(req).then(cached =>
+      cached || fetch(req).then(resp => {
+        const copy = resp.clone();
+        caches.open(CACHE).then(c => c.put(req, copy));
+        return resp;
+      })
+    )
+  );
 });
 
-/* ---------------- Firebase Messaging (background) ---------------- */
+/* Allow page to trigger SW update without reload (optional) */
+self.addEventListener('message', (event) => {
+  if (event.data === 'SKIP_WAITING') self.skipWaiting();
+});
+
+/* ------------ Optional: Firebase Cloud Messaging (background) ------------
+   Fill firebaseConfig below to enable push notifications in background.
+   If left as "YOUR_*", this block will be skipped gracefully.
+---------------------------------------------------------------------------- */
 try {
   importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js');
   importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js');
@@ -47,18 +79,21 @@ try {
     measurementId: "G-TXRJENRYX9"
   };
 
-  firebase.initializeApp(firebaseConfig);
-  const messaging = firebase.messaging();
+  // Only init if user replaced placeholders
+  if (!Object.values(firebaseConfig).some(v => String(v).startsWith('YOUR_'))) {
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
 
-  // When a push arrives while the app is closed or in background
-  messaging.onBackgroundMessage(payload => {
-    const title = payload.notification?.title || 'Solo Leveling';
-    const body = payload.notification?.body || 'New update';
-    const icon = '/icon.ico';
-    const data = payload.data || {};
-    self.registration.showNotification(title, { body, icon, data });
-  });
+    messaging.onBackgroundMessage(payload => {
+      const title = payload.notification?.title || 'Solo Leveling';
+      const body = payload.notification?.body || '';
+      const icon = '/icon.ico';
+      const data = payload.data || {};
+      self.registration.showNotification(title, { body, icon, data });
+    });
+  } else {
+    // console.info('FCM not configured in sw.js — skipping background messaging');
+  }
 } catch (e) {
-  // If Firebase scripts fail to load, just skip messaging
-  console.warn('Firebase Messaging not initialized in SW:', e);
+  // console.warn('Firebase scripts not loaded in SW:', e);
 }
